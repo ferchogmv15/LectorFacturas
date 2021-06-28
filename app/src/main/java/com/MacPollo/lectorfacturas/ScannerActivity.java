@@ -10,11 +10,14 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
+import com.google.zxing.BarcodeFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ScannerActivity extends AppCompatActivity {
 
@@ -30,7 +33,9 @@ public class ScannerActivity extends AppCompatActivity {
         txt = (TextView) findViewById(R.id.textView);
         codeScannerView =  (CodeScannerView) findViewById(R.id.scannerView);
         codeScanner = new CodeScanner(this, codeScannerView);
-        codeScanner.setFormats(CodeScanner.ALL_FORMATS);
+        List<BarcodeFormat> b = new ArrayList<>();
+        b.add(BarcodeFormat.CODE_128);
+        codeScanner.setFormats(b);
 
         codeScanner.setDecodeCallback(result -> runOnUiThread(() -> {
             // productivo
