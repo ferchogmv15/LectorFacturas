@@ -1,9 +1,11 @@
 package com.MacPollo.lectorfacturas;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -58,18 +60,31 @@ public class ScannerActivity extends AppCompatActivity {
                                     // Get the JSON array
                                     String tipo = response.getString("tipo");
                                     if (tipo.equals("S")) {
+                                        TextView txtNumFactura = (TextView) findViewById(R.id.textViewtxtFactura);
+                                        TextView txtValFactura = (TextView) findViewById(R.id.textViewtxtValFac);
+                                        TextView txtCliente = (TextView) findViewById(R.id.textViewtxtCli);
+                                        TextView txtvalPago = (TextView) findViewById(R.id.textViewtxtValPago);
+                                        TextView txtValSaldo = (TextView) findViewById(R.id.textViewtxtValSaldo);
+
                                         JSONObject factura = response.getJSONObject("TFactura");
-                                        StringBuilder mensaje = new StringBuilder("La factura Nro. ");
-                                        mensaje.append("<b>").append(numero).append("</b>").append("<br> por Valor de $");
+                                        //StringBuilder mensaje = new StringBuilder("La factura Nro. ");
+                                        //mensaje.append("<b>").append(numero).append("</b>").append("<br> por Valor de $");
+                                        txtNumFactura.setText(numero);
                                         String valor = format(String.valueOf(factura.getInt("Valor")));
-                                        mensaje.append("<b>").append(valor).append("</b>");
-                                        mensaje.append("<br>a nombre de ");
-                                        mensaje.append("<b>").append(factura.getString("Name1")).append("</b><br>");
+                                        txtValFactura.setText(valor);
+                                        //mensaje.append("<b>").append(valor).append("</b>");
+                                        //mensaje.append("<br>a nombre de ");
+                                        //mensaje.append("<b>").append(factura.getString("Name1")).append("</b><br>");
+                                        txtCliente.setText(factura.getString("Name1"));
                                         String abono = format(String.valueOf(factura.getInt("Abono")));
-                                        mensaje.append("Valor pagado $").append("<b>").append(abono).append("</b>");
+                                        //mensaje.append("Valor pagado $").append("<b>").append(abono).append("</b>");
+                                        txtvalPago.setText(abono);
                                         String saldo = format(String.valueOf(factura.getInt("Saldo")));
-                                        mensaje.append("<br> Saldo $").append("<b>").append(saldo).append("</b>");
-                                        txt.setText(Html.fromHtml(mensaje.toString()));
+                                        //mensaje.append("<br> Saldo $").append("<b>").append(saldo).append("</b>");
+                                        txtvalPago.setText(saldo);
+                                        txt.setVisibility(View.INVISIBLE);
+                                        ConstraintLayout layoutResultados = (ConstraintLayout) findViewById(R.id.LayoutResultados);
+                                        layoutResultados.setVisibility(View.VISIBLE);
                                     } else {
                                         txt.setText(Html.fromHtml("Factura Nro. <b>" + numero  +"</b><br>"));
                                         String mensaje = response.getString("mensaje");
