@@ -33,9 +33,10 @@ public class ScannerActivity extends AppCompatActivity {
         txt = (TextView) findViewById(R.id.textView);
         codeScannerView =  (CodeScannerView) findViewById(R.id.scannerView);
         codeScanner = new CodeScanner(this, codeScannerView);
-        List<BarcodeFormat> b = new ArrayList<>();
-        b.add(BarcodeFormat.CODE_128);
-        codeScanner.setFormats(b);
+        //List<BarcodeFormat> b = new ArrayList<>();
+        //b.add(BarcodeFormat.CODE_128);
+        //codeScanner.setFormats(b);
+        codeScanner.setFormats(CodeScanner.ALL_FORMATS);
 
         codeScanner.setDecodeCallback(result -> runOnUiThread(() -> {
             // productivo
