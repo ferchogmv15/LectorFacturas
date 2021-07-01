@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E2E1DF"
     android:configChanges="orientation"
     android:screenOrientation="portrait"
-    tools:context=".ScannerActivity">
+    tools:context=".Actividades.ScannerActivity">
 
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scannerView"
@@ -44,11 +45,11 @@
         android:id="@+id/LayoutResultados"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scannerView"
-        android:visibility="invisible">
+        app:layout_constraintTop_toBottomOf="@+id/scannerView">
 
         <TextView
             android:id="@+id/textViewlblFactura"
@@ -103,12 +104,12 @@
             android:id="@+id/textViewtxtValFac"
             android:layout_width="0dp"
             android:layout_height="32dp"
+            android:layout_marginStart="150dp"
             android:text="$285.600"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#041A64"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:layout_marginLeft="175dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -169,12 +170,12 @@
             android:id="@+id/textViewtxtValPago"
             android:layout_width="0dp"
             android:layout_height="32dp"
+            android:layout_marginStart="150dp"
             android:text="$0"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#041A64"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:layout_marginLeft="175dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -202,12 +203,12 @@
             android:id="@+id/textViewtxtValSaldo"
             android:layout_width="0dp"
             android:layout_height="32dp"
+            android:layout_marginStart="150dp"
             android:text="$285.600"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#041A64"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:layout_marginLeft="175dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

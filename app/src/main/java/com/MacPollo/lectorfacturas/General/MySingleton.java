@@ -1,4 +1,4 @@
-package com.MacPollo.lectorfacturas;
+package com.MacPollo.lectorfacturas.General;
 
 import android.content.Context;
 import android.graphics.Bitmap;

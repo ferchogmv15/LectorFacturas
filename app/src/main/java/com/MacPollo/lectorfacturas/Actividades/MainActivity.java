@@ -1,4 +1,4 @@
-package com.MacPollo.lectorfacturas;
+package com.MacPollo.lectorfacturas.Actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -7,17 +7,17 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+
+import com.MacPollo.lectorfacturas.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnScan;
+    Button btnScan, btnScanRuta;
     String[] permissions = {
             Manifest.permission.CAMERA
     };
@@ -29,13 +29,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         checkpermissions();
-        btnScan = (Button) findViewById(R.id.button);
-        btnScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ScannerActivity.class));
-            }
-        });
+        btnScan = (Button) findViewById(R.id.btnScanFactura);
+        btnScan.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ScannerActivity.class)));
+        btnScanRuta = (Button) findViewById(R.id.btnScanRuta);
+        btnScanRuta.setOnClickListener(c -> startActivity(new Intent(getApplicationContext(), ScannerRutaActivity.class)));
     }
 
     private boolean checkpermissions(){

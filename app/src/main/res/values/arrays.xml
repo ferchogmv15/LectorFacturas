@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cabecera_tabla_fac_ruta">
+        <item>Factura</item>
+        <item>Valor Pagado</item>
+    </string-array>
+</resources>

@@ -1,4 +1,4 @@
-package com.MacPollo.lectorfacturas;
+package com.MacPollo.lectorfacturas.Actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -8,18 +8,17 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
+import com.MacPollo.lectorfacturas.General.MySingleton;
+import com.MacPollo.lectorfacturas.R;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
-import com.google.zxing.BarcodeFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ScannerActivity extends AppCompatActivity {
 
@@ -81,7 +80,7 @@ public class ScannerActivity extends AppCompatActivity {
                                         txtvalPago.setText(abono);
                                         String saldo = format(String.valueOf(factura.getInt("Saldo")));
                                         //mensaje.append("<br> Saldo $").append("<b>").append(saldo).append("</b>");
-                                        txtvalPago.setText(saldo);
+                                        txtValSaldo.setText(saldo);
                                         txt.setVisibility(View.INVISIBLE);
                                         ConstraintLayout layoutResultados = (ConstraintLayout) findViewById(R.id.LayoutResultados);
                                         layoutResultados.setVisibility(View.VISIBLE);
@@ -130,6 +129,7 @@ public class ScannerActivity extends AppCompatActivity {
         if (i > 0) {
             sb.insert(0, input.substring(0, i));
         }
+        sb.insert(0, "$");
         return sb.toString();
     }
 

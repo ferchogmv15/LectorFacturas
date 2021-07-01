@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondosuperior"
-    tools:context=".MainActivity">
+    tools:context=".Actividades.MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnScanFactura"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_background"
-        android:text="Verificar Pago Factura"
+        android:text="@string/verificar_pago_factura"
         android:textColor="@android:color/white"
         app:backgroundTint="#FF5722"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,11 +23,11 @@
         app:layout_constraintVertical_bias="0.708" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnScanRuta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_background"
-        android:text="Facturas pago en linea en mi ruta"
+        android:text="@string/facturas_pago_en_linea_en_mi_ruta"
         android:textColor="@android:color/white"
         app:backgroundTint="#FF5722"
         app:layout_constraintBottom_toBottomOf="parent"

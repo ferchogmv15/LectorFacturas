@@ -1,5 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.LectorFacturas" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+    <style name="Theme.LectorFacturas" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge"></style>
+
+    <style name="Theme.LectorFacturas.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="Theme.LectorFacturas.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.LectorFacturas.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
