@@ -64,28 +64,29 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-            <TableRow android:layout_width="0dp"
-                >
+            <TableRow>
 
                 <TextView
                     android:id="@+id/textViewlblFactura"
                     android:layout_width="320dp"
-                    android:layout_height="35sp"
+                    android:layout_height="40sp"
                     android:text="@string/factura_nro"
                     android:textAlignment="textStart"
+                    android:background="@drawable/border"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
-                    android:textSize="25sp" />
+                    android:textSize="23sp"
+                    />
 
                 <TextView
                     android:id="@+id/textViewtxtFactura"
-                    android:layout_width="150sp"
-                    android:layout_height="35sp"
+                    android:layout_height="40sp"
                     android:gravity="right"
                     android:text="1990003070"
+                    android:background="@drawable/border"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
-                    android:textSize="25sp"
+                    android:textSize="23sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent" />
             </TableRow>
@@ -95,39 +96,19 @@
                 <TextView
                     android:id="@+id/textViewlblValFac"
                     android:text="@string/valor_factura"
-                    android:layout_height="35sp"
+                    android:layout_height="40sp"
                     android:textAlignment="textStart"
+                    android:background="@drawable/border"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
-                    android:textSize="25sp" />
+                    android:textSize="23sp" />
 
                 <TextView
                     android:id="@+id/textViewtxtValFac"
                     android:gravity="right"
-                    android:layout_height="35sp"
+                    android:layout_height="40sp"
                     android:text="$285.600"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="#041A64"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/textViewlblCli"
-                    android:layout_height="90dp"
-                    android:text="@string/cliente"
-                    android:textAlignment="textStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="#041A64"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/textViewtxtCli"
-                    android:layout_height="90dp"
-                    android:gravity="right"
-                    android:text="GERMAN LEONEL RODRIGUEZ GUZMAN"
+                    android:background="@drawable/border"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
                     android:textSize="23sp"
@@ -137,22 +118,46 @@
             <TableRow>
 
                 <TextView
+                    android:id="@+id/textViewlblCli"
+                    android:layout_height="100sp"
+                    android:text="@string/cliente"
+                    android:background="@drawable/border"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#041A64"
+                    android:textSize="23sp" />
+
+                <TextView
+                    android:id="@+id/textViewtxtCli"
+                    android:layout_height="100sp"
+                    android:background="@drawable/border"
+                    android:gravity="right"
+                    android:text="GERMAN LEONEL RODRIGUEZ GUZMAN"
+                    android:textColor="#041A64"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
                     android:id="@+id/textViewlblValPago"
-                    android:layout_height="35dp"
+                    android:layout_height="40sp"
+                    android:background="@drawable/border"
                     android:text="@string/valor_pagado"
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
-                    android:textSize="25sp" />
+                    android:textSize="23sp" />
 
                 <TextView
                     android:id="@+id/textViewtxtValPago"
-                    android:layout_height="35dp"
+                    android:layout_height="40sp"
+                    android:background="@drawable/border"
                     android:gravity="right"
                     android:text="$0"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
-                    android:textSize="25sp"
+                    android:textSize="23sp"
                     android:textStyle="bold" />
             </TableRow>
 
@@ -160,20 +165,23 @@
 
                 <TextView
                     android:id="@+id/textViewlblValSaldo"
-                    android:layout_height="35dp"
+                    android:layout_height="40sp"
                     android:text="@string/saldo_actual_factura"
                     android:textAlignment="textStart"
+                    android:background="@drawable/border"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
-                    android:textSize="25sp" />
+                    android:textSize="23sp" />
 
                 <TextView
                     android:id="@+id/textViewtxtValSaldo"
+                    android:layout_height="40sp"
                     android:gravity="right"
                     android:text="$285.600"
+                    android:background="@drawable/border"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
-                    android:textSize="25sp"
+                    android:textSize="23sp"
                     android:textStyle="bold" />
             </TableRow>
 

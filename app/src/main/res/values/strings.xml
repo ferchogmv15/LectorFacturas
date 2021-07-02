@@ -4,7 +4,7 @@
     <string name="factura_nro">FACTURA:</string>
     <string name="valor_factura">VALOR:</string>
     <string name="cliente">CLIENTE:</string>
-    <string name="valor_pagado">VALOR PAGADO:</string>
+    <string name="valor_pagado">VLR PAGADO:</string>
     <string name="saldo_actual_factura">SALDO:</string>
     <string name="verificar_pago_factura">Verificar Pago Factura</string>
     <string name="facturas_pago_en_linea_en_mi_ruta">Facturas pago en linea en mi ruta</string>
