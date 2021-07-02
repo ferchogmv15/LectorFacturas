@@ -9,6 +9,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.MacPollo.lectorfacturas.R;
+
 import java.util.ArrayList;
 
 public class TablaFacRuta {
@@ -29,7 +33,7 @@ public class TablaFacRuta {
         this.tabla = tabla;
         rs = this.actividad.getResources();
         FILAS = COLUMNAS = 0;
-        filas = new ArrayList<TableRow>();
+        filas = new ArrayList<>();
     }
 
     /**
@@ -46,14 +50,13 @@ public class TablaFacRuta {
         String[] arraycabecera = rs.getStringArray(recursocabecera);
         COLUMNAS = arraycabecera.length;
 
-        for(int i = 0; i < arraycabecera.length; i++)
-        {
+        for (String s : arraycabecera) {
             TextView texto = new TextView(actividad);
-            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(arraycabecera[i]), TableRow.LayoutParams.WRAP_CONTENT);
-            texto.setText(arraycabecera[i]);
+            layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(s), TableRow.LayoutParams.WRAP_CONTENT);
+            texto.setText(s);
             texto.setGravity(Gravity.CENTER_HORIZONTAL);
-            //texto.setTextAppearance(actividad, R.style.estilo_celda);
-            //texto.setBackgroundResource(R.drawable.tabla_celda_cabecera);
+            texto.setTextAppearance(actividad, R.style.estilo_celda);
+            texto.setBackground(ContextCompat.getDrawable(actividad.getApplicationContext(), R.drawable.border));
             texto.setLayoutParams(layoutCelda);
 
             fila.addView(texto);
@@ -81,8 +84,8 @@ public class TablaFacRuta {
             TextView texto = new TextView(actividad);
             texto.setText(String.valueOf(elementos.get(i)));
             texto.setGravity(Gravity.CENTER_HORIZONTAL);
-            //texto.setTextAppearance(actividad, R.style.estilo_celda);
-            //texto.setBackgroundResource(R.drawable.tabla_celda);
+            texto.setTextAppearance(actividad, R.style.estilo_celda);
+            texto.setBackground(ContextCompat.getDrawable(actividad.getApplicationContext(), R.drawable.border));
             layoutCelda = new TableRow.LayoutParams(obtenerAnchoPixelesTexto(texto.getText().toString()), TableRow.LayoutParams.WRAP_CONTENT);
             texto.setLayoutParams(layoutCelda);
 

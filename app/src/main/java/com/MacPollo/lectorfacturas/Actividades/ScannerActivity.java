@@ -51,6 +51,7 @@ public class ScannerActivity extends AppCompatActivity {
                 HashMap<String, String> data = new HashMap<>();
                 data.put("factura", completar(numero));
                 JSONObject parameters = new JSONObject(data);
+                txt.setText(Html.fromHtml("Procesando Factura Nro. <b>" + numero  +"</b>, Por favor espere..."));
 
                 JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,
                         parameters, response -> {
