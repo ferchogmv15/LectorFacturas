@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">LectorFacturas</string>
     <string name="scan_cod_fac">Por favor escanee el código en la Factura</string>
-    <string name="factura_nro">Factura Nro.</string>
-    <string name="valor_factura">Valor Factura</string>
-    <string name="cliente">Cliente</string>
-    <string name="valor_pagado">Valor Pagado</string>
-    <string name="saldo_actual_factura">Saldo Actual Factura</string>
+    <string name="factura_nro">FACTURA:</string>
+    <string name="valor_factura">VALOR:</string>
+    <string name="cliente">CLIENTE:</string>
+    <string name="valor_pagado">VALOR PAGADO:</string>
+    <string name="saldo_actual_factura">SALDO:</string>
     <string name="verificar_pago_factura">Verificar Pago Factura</string>
     <string name="facturas_pago_en_linea_en_mi_ruta">Facturas pago en linea en mi ruta</string>
     <string name="title_activity_scanner_ruta">ScannerRutaActivity</string>
