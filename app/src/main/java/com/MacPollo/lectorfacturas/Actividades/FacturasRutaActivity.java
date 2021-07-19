@@ -3,15 +3,30 @@ package com.MacPollo.lectorfacturas.Actividades;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Html;
+import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
+import com.MacPollo.lectorfacturas.General.Formatos;
+import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.R;
 import com.MacPollo.lectorfacturas.tablas.TablaFacRuta;
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FacturasRutaActivity extends AppCompatActivity {
+
+    TextView tvNumeroContrato;
+    TextView tvErrorContrato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,18 +36,85 @@ public class FacturasRutaActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String codigo = extras.getString("codigo");
-            Log.i(codigo, "INFOrmacion");
+            tvNumeroContrato = (TextView) findViewById(R.id.textViewNroContrato);
+            tvErrorContrato = (TextView) findViewById(R.id.textViewErrorContrato);
+            if (isSoloNumero(codigo)) {
+                tvNumeroContrato.setText("Contrato transporte \n No: " + devolverSinCeros(codigo));
+                // productivo
+                // String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultacontrato";
+                // pruebas
+                String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultacontrato";
+                // desarrollo
+                //String url = "http://192.168.1.11:8000/api/factura/consultacontrato";
+                //String url = "http://192.168.1.11:8081/consultacontrato.php";
+                HashMap<String, String> data = new HashMap<>();
+                data.put("contrato", codigo);
+                JSONObject parameters = new JSONObject(data);
+                tvErrorContrato.setText(Html.fromHtml("Procesando contrato No. <b>" + codigo  +"</b>, Por favor espere..."));
 
-            TablaFacRuta tabla = new TablaFacRuta(this, (TableLayout)findViewById(R.id.tabla));
-            tabla.agregarCabecera(R.array.cabecera_tabla_fac_ruta);
-            for(int i = 0; i < 15; i++)
-            {
-                ArrayList<String> elementos = new ArrayList<String>();
-                elementos.add(Integer.toString(i));
-                elementos.add("Casilla [" + i + ", 0]");
-                tabla.agregarFilaTabla(elementos);
+                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,
+                        parameters, response -> {
+                    try{
+                        if (!response.toString().contains("message")) {
+                            // Get the JSON array
+                            String tipo = response.getString("tipo");
+                            if (tipo.equals("S")) {
+
+                                JSONObject transporte = response.getJSONObject("TFactura");
+
+                                TablaFacRuta tabla = new TablaFacRuta(this, (TableLayout)findViewById(R.id.tabla));
+                                tabla.agregarCabecera(R.array.cabecera_tabla_fac_ruta);
+                                if(transporte.get("item") instanceof JSONObject) {
+                                    JSONObject item = transporte.getJSONObject("item");
+                                    ArrayList<String> elementos = new ArrayList<String>();
+                                    elementos.add(item.getString("Xblnr"));
+                                    elementos.add(Formatos.formatoValor(String.valueOf(item.getInt("Pago"))));
+                                    tabla.agregarFilaTabla(elementos);
+                                } else if (transporte.get("item") instanceof JSONArray) {
+                                    JSONArray items = transporte.getJSONArray("item");
+                                    for(int i = 0; i < items.length(); i++)
+                                    {
+                                        JSONObject item = items.getJSONObject(i);
+                                        ArrayList<String> elementos = new ArrayList<String>();
+                                        elementos.add(item.getString("Xblnr"));
+                                        elementos.add(Formatos.formatoValor(String.valueOf(item.getInt("Pago"))));
+                                        tabla.agregarFilaTabla(elementos);
+                                    }
+                                }
+
+                                tvErrorContrato.setVisibility(View.INVISIBLE);
+                                ScrollView resultados = (ScrollView) findViewById(R.id.scrollVertical);
+                                resultados.setVisibility(View.VISIBLE);
+                            } else {
+                                String mensaje = response.getString("mensaje");
+                                tvErrorContrato.setText(mensaje);
+                            }
+                        } else {
+                            String mensaje = response.getString("message");
+                            tvErrorContrato.setText(mensaje);
+                        }
+
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }, error -> {
+                    tvErrorContrato.setText("Error al consultar el contrato: " + error.getMessage());
+                });
+
+                // Add a request (in this example, called stringRequest) to your RequestQueue.
+                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonRequest);
+            } else {
+                tvNumeroContrato.setText("Contrato transporte \n No: " + codigo);
+                tvErrorContrato.setText("No se encuentra el contrato, Por favor revise");
             }
-
         }
+    }
+
+    private boolean isSoloNumero(String valor) {
+        return valor.matches("^\\d{1,10}$");
+    }
+
+    private String devolverSinCeros(String valor) {
+        return String.valueOf(Integer.parseInt(valor));
     }
 }

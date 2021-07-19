@@ -9,6 +9,10 @@ import com.MacPollo.lectorfacturas.Actividades.FacturasRutaActivity;
 import com.MacPollo.lectorfacturas.R;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
+import com.google.zxing.BarcodeFormat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScannerRutaActivity extends AppCompatActivity {
 
@@ -22,7 +26,10 @@ public class ScannerRutaActivity extends AppCompatActivity {
 
         codeScannerView =  (CodeScannerView) findViewById(R.id.scannerView);
         codeScanner = new CodeScanner(this, codeScannerView);
-        codeScanner.setFormats(CodeScanner.ALL_FORMATS);
+        List<BarcodeFormat> b = new ArrayList<>();
+        b.add(BarcodeFormat.CODE_128);
+        codeScanner.setFormats(b);
+        //codeScanner.setFormats(CodeScanner.ALL_FORMATS);
 
         codeScanner.setDecodeCallback(result -> runOnUiThread(() -> {
             String codigo = result.getText();

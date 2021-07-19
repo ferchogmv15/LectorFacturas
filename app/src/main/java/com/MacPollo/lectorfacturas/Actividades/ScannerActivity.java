@@ -8,17 +8,21 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
+import com.MacPollo.lectorfacturas.General.Formatos;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.R;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
+import com.google.zxing.BarcodeFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ScannerActivity extends AppCompatActivity {
 
@@ -34,10 +38,10 @@ public class ScannerActivity extends AppCompatActivity {
         txt = (TextView) findViewById(R.id.textView);
         codeScannerView =  (CodeScannerView) findViewById(R.id.scannerView);
         codeScanner = new CodeScanner(this, codeScannerView);
-        //List<BarcodeFormat> b = new ArrayList<>();
-        //b.add(BarcodeFormat.CODE_128);
-        //codeScanner.setFormats(b);
-        codeScanner.setFormats(CodeScanner.ALL_FORMATS);
+        List<BarcodeFormat> b = new ArrayList<>();
+        b.add(BarcodeFormat.QR_CODE);
+        codeScanner.setFormats(b);
+        //codeScanner.setFormats(CodeScanner.ALL_FORMATS);
 
         codeScanner.setDecodeCallback(result -> runOnUiThread(() -> {
             // productivo
@@ -45,11 +49,12 @@ public class ScannerActivity extends AppCompatActivity {
             // pruebas
             String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultafactura";
             // desarrollo
-            //String url = "http://192.168.1.7:8000/api/factura/consultafactura";
-            String numero = result.getText();
-            if (esValido(numero)) {
+            //String url = "http://192.168.1.11:8000/api/factura/consultafactura";
+            String texto = result.getText();
+            if (esValido(texto)) {
                 HashMap<String, String> data = new HashMap<>();
-                data.put("factura", completar(numero));
+                String numero = texto.substring(texto.indexOf("=") + 1);
+                data.put("factura", numero);
                 JSONObject parameters = new JSONObject(data);
                 txt.setText(Html.fromHtml("Procesando Factura Nro. <b>" + numero  +"</b>, Por favor espere..."));
 
@@ -69,17 +74,17 @@ public class ScannerActivity extends AppCompatActivity {
                                         JSONObject factura = response.getJSONObject("TFactura");
                                         //StringBuilder mensaje = new StringBuilder("La factura Nro. ");
                                         //mensaje.append("<b>").append(numero).append("</b>").append("<br> por Valor de $");
-                                        txtNumFactura.setText(numero);
-                                        String valor = format(String.valueOf(factura.getInt("Valor")));
+                                        txtNumFactura.setText(factura.getString("Xblnr"));
+                                        String valor = Formatos.formatoValor(String.valueOf(factura.getInt("Valor")));
                                         txtValFactura.setText(valor);
                                         //mensaje.append("<b>").append(valor).append("</b>");
                                         //mensaje.append("<br>a nombre de ");
                                         //mensaje.append("<b>").append(factura.getString("Name1")).append("</b><br>");
                                         txtCliente.setText(factura.getString("Name1"));
-                                        String abono = format(String.valueOf(factura.getInt("Abono")));
+                                        String abono = Formatos.formatoValor(String.valueOf(factura.getInt("Abono")));
                                         //mensaje.append("Valor pagado $").append("<b>").append(abono).append("</b>");
                                         txtvalPago.setText(abono);
-                                        String saldo = format(String.valueOf(factura.getInt("Saldo")));
+                                        String saldo = Formatos.formatoValor(String.valueOf(factura.getInt("Saldo")));
                                         //mensaje.append("<br> Saldo $").append("<b>").append(saldo).append("</b>");
                                         txtValSaldo.setText(saldo);
                                         txt.setVisibility(View.INVISIBLE);
@@ -107,31 +112,19 @@ public class ScannerActivity extends AppCompatActivity {
                 // Add a request (in this example, called stringRequest) to your RequestQueue.
                 MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonRequest);
             } else {
-                txt.setText(Html.fromHtml("Factura Nro. <b>" + numero  +"</b><br>"));
-                txt.append("Nro. de factura no válido");
+                txt.setText(Html.fromHtml("Texto: <b>" + texto  +"</b><br>"));
+                txt.append("No se encuentra el numero de factura, Por favor revise");
             }
         }));
     }
 
     public static boolean esValido(String str) {
-        return str.matches("\\d{1,10}");  //match a number entero de 1 al 10 digitos
-    }
-
-    public static String format(String input){
-        StringBuilder sb = new StringBuilder();
-        int i = input.length();
-        while (i - 3 > 0) {
-            sb.insert(0, input.substring(i-3, i));
-            i -= 3;
-            if (i > 0) {
-                sb.insert(0, ".");
-            }
+        if(str.indexOf("=") != -1 && str.indexOf("=") + 1 < str.length() - 1) {
+            str = str.substring(str.indexOf("=") + 1);
+            return str.matches("(\\w){10}");  //match a number entero de 1 al 10 digitos
+        } else {
+            return false;
         }
-        if (i > 0) {
-            sb.insert(0, input.substring(0, i));
-        }
-        sb.insert(0, "$");
-        return sb.toString();
     }
 
     public static String completar(String input){
