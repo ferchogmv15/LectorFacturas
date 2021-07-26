@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -29,10 +30,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         checkpermissions();
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            String mensaje = extras.getString("mensaje");
+            updateUiWithUser(mensaje);
+        }
         btnScan = (Button) findViewById(R.id.btnScanFactura);
         btnScan.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ScannerActivity.class)));
         btnScanRuta = (Button) findViewById(R.id.btnScanRuta);
         btnScanRuta.setOnClickListener(c -> startActivity(new Intent(getApplicationContext(), ScannerRutaActivity.class)));
+    }
+
+    private void updateUiWithUser(String mensaje) {
+        // TODO : initiate successful logged in experience
+        //Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.welcome).setMessage(mensaje).setPositiveButton("Entendido", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private boolean checkpermissions(){
