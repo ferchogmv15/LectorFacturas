@@ -80,6 +80,12 @@ public class FacturasRutaActivity extends AppCompatActivity {
                                         elementos.add(Formatos.formatoValor(String.valueOf(item.getInt("Pago"))));
                                         tabla.agregarFilaTabla(elementos);
                                     }
+                                    //for (int i = 0; i<  30; i++) {
+                                        //ArrayList<String> elementos = new ArrayList<String>();
+                                        //elementos.add("prueba" + i);
+                                        //elementos.add("texto" + i);
+                                        //tabla.agregarFilaTabla(elementos);
+                                    //}
                                 }
 
                                 tvErrorContrato.setVisibility(View.INVISIBLE);

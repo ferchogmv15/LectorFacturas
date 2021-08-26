@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,8 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.MacPollo.lectorfacturas.BuildConfig;
 import com.MacPollo.lectorfacturas.General.MySingleton;
+import com.MacPollo.lectorfacturas.General.Parametros;
 import com.MacPollo.lectorfacturas.R;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -30,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText cedulaEditText;
     Button loginButton;
     ProgressBar loadingProgressBar;
+    final int codeVersion = Parametros.getCodeVersionApp();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginButton.setOnClickListener(v -> loguear(cedulaEditText.getText().toString()));
+        SharedPreferences preferencias = getSharedPreferences("user-data.xml", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferencias.edit();
+        editor.clear();
+        editor.apply();
 
+        //Toast.makeText(getApplicationContext(), String.valueOf(versionCode), Toast.LENGTH_SHORT).show();
     }
 
     private void loguear(String cedula) {
@@ -78,6 +88,10 @@ public class LoginActivity extends AppCompatActivity {
                         String tipo = response.getString("tipo");
                         String mensaje = response.getString("mensaje");
                         if (tipo.equals("S")) {
+                            SharedPreferences preferencias = getSharedPreferences("user-data.xml", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferencias.edit();
+                            editor.putString("cedula", cedula);
+                            editor.apply();
                             Intent intent = new Intent(this, MainActivity.class);
                             intent.putExtra("mensaje", mensaje);
                             startActivity(intent);

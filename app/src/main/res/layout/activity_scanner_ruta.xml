@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Actividades.ScannerRutaActivity">
 
+    <Button android:id="@+id/btnDigitar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/option_digitar"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/button_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scannerView"
         android:layout_width="wrap_content"
