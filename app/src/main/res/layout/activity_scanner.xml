@@ -9,6 +9,15 @@
     android:screenOrientation="locked"
     tools:context=".Actividades.ScannerActivity">
 
+    <Button android:id="@+id/btnDigitar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/option_digitar"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/button_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scannerView"
         android:layout_width="wrap_content"
@@ -20,13 +29,29 @@
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent"
-        app:maskColor="#6C000000" />
+        app:maskColor="#6C000000" >
+
+
+    </com.budiyev.android.codescanner.CodeScannerView>
+
+    <CheckBox
+        android:id="@+id/checkBoxVerificarFac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/verificar_factura"
+        android:textColor="#041A64"
+        android:textSize="25sp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="100dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:background="#E2E1DF"
         android:gravity="center_horizontal"
         android:justificationMode="inter_word"
@@ -46,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="invisible"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:shrinkColumns="*"
-            android:stretchColumns="*"
+            android:stretchColumns="0,1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -64,7 +89,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-            <TableRow>
+            <TableRow >
 
                 <TextView
                     android:id="@+id/textViewlblFactura"
@@ -114,7 +139,7 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow>
+            <TableRow >
 
                 <TextView
                     android:id="@+id/textViewlblCli"
@@ -180,6 +205,30 @@
                     android:background="@drawable/border"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#041A64"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow >
+
+                <TextView
+                    android:id="@+id/textViewlblMotivoRechazo"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border"
+                    android:text="@string/motivo_rechazo"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#E2021A"
+                    android:textSize="21sp" />
+
+                <TextView
+                    android:id="@+id/textViewtxtMotivoRechazo"
+                    android:layout_height="80dp"
+                    android:gravity="right"
+                    android:text="@string/motivo_rechazo"
+                    android:background="@drawable/border"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#E2021A"
                     android:textSize="23sp"
                     android:textStyle="bold" />
             </TableRow>
