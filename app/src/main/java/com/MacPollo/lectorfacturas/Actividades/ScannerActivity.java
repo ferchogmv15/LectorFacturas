@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,9 +12,11 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,8 +44,9 @@ public class ScannerActivity extends AppCompatActivity {
     CodeScannerView codeScannerView;
     Button btnDigitar;
     CheckBox checkBoxVerificarFac;
-    String cedula;
+    String cedula, numeroFactura;
     ConstraintLayout layoutResultados;
+    TableRow rowMotivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,7 @@ public class ScannerActivity extends AppCompatActivity {
         cedula = preferencias.getString("cedula", "");
 
         layoutResultados = (ConstraintLayout) findViewById(R.id.LayoutResultados);
+        rowMotivo = (TableRow) findViewById(R.id.rowMotivoRechazo);
         //Toast.makeText(getApplicationContext(), cedula, Toast.LENGTH_SHORT).show();
     }
 
@@ -84,15 +89,15 @@ public class ScannerActivity extends AppCompatActivity {
         // productivo
         // String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultafactura";
         // pruebas
-        //String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultafactura";
+        String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultafactura";
         // desarrollo
-        String url = "http://192.168.254.164:8000/api/factura/consultafactura";
+        //String url = "http://192.168.254.164:8000/api/factura/consultafactura";
         if (esValido(texto, escaneado)) {
             HashMap<String, String> data = new HashMap<>();
-            String numero = texto.substring(texto.indexOf("=") + 1);
-            data.put("factura", numero);
+            numeroFactura = texto.substring(texto.indexOf("=") + 1);
+            data.put("factura", numeroFactura);
             JSONObject parameters = new JSONObject(data);
-            txt.setText(Html.fromHtml("Procesando Factura Nro. <b>" + numero  +"</b>, Por favor espere..."));
+            txt.setText(Html.fromHtml("Procesando Factura Nro. <b>" + numeroFactura  +"</b>, Por favor espere..."));
 
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,
                     parameters, response -> {
@@ -124,16 +129,24 @@ public class ScannerActivity extends AppCompatActivity {
                             String saldo = Formatos.formatoValor(String.valueOf(factura.getInt("Saldo")));
                             //mensaje.append("<br> Saldo $").append("<b>").append(saldo).append("</b>");
                             txtValSaldo.setText(saldo);
-                            txtMotivoRechazo.setText(factura.getString("Textoerror"));
+
                             mostrarTabla(true);
+                            String motivo = factura.getString("Textoerror");
+                            if (motivo != null && !motivo.equals("")) {
+                                txtMotivoRechazo.setText(motivo);
+                                rowMotivo.setVisibility(View.VISIBLE);
+                            } else {
+                                rowMotivo.setVisibility(View.INVISIBLE);
+                            }
+
                         } else {
-                            txt.setText(Html.fromHtml("Factura Nro. <b>" + numero  +"</b><br>"));
+                            txt.setText(Html.fromHtml("Factura Nro. <b>" + numeroFactura  +"</b><br>"));
                             String mensaje = response.getString("mensaje");
                             txt.append(mensaje);
                             mostrarTabla(false);
                         }
                     } else {
-                        txt.setText(Html.fromHtml("Factura Nro. <b>" + numero  +"</b><br>"));
+                        txt.setText(Html.fromHtml("Factura Nro. <b>" + numeroFactura  +"</b><br>"));
                         String mensaje = response.getString("message");
                         txt.append(mensaje);
                         mostrarTabla(false);
@@ -143,7 +156,7 @@ public class ScannerActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }, error -> {
-                txt.setText(Html.fromHtml("Factura Nro. <b>" + numero  +"</b><br>"));
+                txt.setText(Html.fromHtml("Factura Nro. <b>" + numeroFactura  +"</b><br>"));
                 txt.append("Error al consultar la factura: " + error.getMessage());
                 mostrarTabla(false);
             });
@@ -192,9 +205,48 @@ public class ScannerActivity extends AppCompatActivity {
 
     private void enviarVerificacion() {
         if (checkBoxVerificarFac.isChecked()) {
-            Toast.makeText(getApplicationContext(), "checked", Toast.LENGTH_SHORT).show();
+            // productivo
+            // String url = "http://ap2021.macpollo.com/apiv1/api/factura/verificarfacturaconductor";
+            // pruebas
+            String url = "http://ap2021.macpollo.com/apiprueba/api/factura/verificarfacturaconductor";
+
+            HashMap<String, String> data = new HashMap<>();
+            data.put("cedulacon", cedula);
+            data.put("factura", numeroFactura);
+            JSONObject parameters = new JSONObject(data);
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,
+                    parameters, response -> {
+                try{
+                    if (!response.toString().contains("message")) {
+                        // Get the JSON array
+                        String tipo = response.getString("tipo");
+                        String mensaje = response.getString("mensaje");
+                        if (tipo.equals("S")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setTitle("Verificación Exitosa").setMessage(mensaje).setPositiveButton("Entendido", null);
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                            checkBoxVerificarFac.setClickable(false);
+                        } else {
+                            showAlertFailed(mensaje);
+                        }
+                    } else {
+                        String mensaje = response.getString("message");
+                        showAlertFailed(mensaje);
+                    }
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }, error -> {
+                showAlertFailed(error.getMessage());
+            });
+
+            // Add a request (in this example, called stringRequest) to your RequestQueue.
+            MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonRequest);
         } else {
-            Toast.makeText(getApplicationContext(), "not checked", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "NOT checked", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -221,6 +273,15 @@ public class ScannerActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void showAlertFailed(String errorString) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.estilo_alerta);
+        builder.setTitle("Advertencia").setMessage(errorString)
+                .setNegativeButton("Entendido", (dialog, id) -> {});
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        //Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
     /**
      * Metodo para mostar tabla de resultados de consulta a factura o mostrar texto de error
      * @param mostrar = true muestra tabla con datos, false = muestra
@@ -229,9 +290,14 @@ public class ScannerActivity extends AppCompatActivity {
         if (mostrar) {
             txt.setVisibility(View.INVISIBLE);
             layoutResultados.setVisibility(View.VISIBLE);
+            checkBoxVerificarFac.setVisibility(View.VISIBLE);
+            checkBoxVerificarFac.setChecked(false);
+            checkBoxVerificarFac.setClickable(true);
         } else {
             txt.setVisibility(View.VISIBLE);
             layoutResultados.setVisibility(View.INVISIBLE);
+            checkBoxVerificarFac.setVisibility(View.INVISIBLE);
+            checkBoxVerificarFac.setChecked(false);
         }
     }
 

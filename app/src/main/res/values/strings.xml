@@ -34,10 +34,11 @@
     <string name="digite_nro_contrato">Digite el numero de contrato</string>
     <string name="cambio_contrasena">Olvidé mi contraseña</string>
     <string name="registrarse">Registrarse</string>
+    <string name="verificar">Verificar</string>
 
     <string name="cod_verificacion">Código de verificación</string>
     <string name="contrasena">Contraseña</string>
-    <string name="repita_contrasena">Repita la contraseña</string>
+    <string name="repita_contrasena">Repetir contraseña</string>
 
     <string name="verificar_factura">Verificar factura</string>
 </resources>

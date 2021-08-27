@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LectorFacturas"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Actividades.CambioClaveActivity"></activity>
-        <activity android:name=".Actividades.RegistroUsuarioActivity" />
+        <activity android:name=".Actividades.VerificarUsuarioActivity"></activity>
+        <activity android:name=".Actividades.CambioClaveActivity" />
         <activity android:name=".Actividades.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

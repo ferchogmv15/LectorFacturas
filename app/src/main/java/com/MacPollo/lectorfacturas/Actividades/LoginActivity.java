@@ -7,17 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.MacPollo.lectorfacturas.BuildConfig;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.General.Parametros;
 import com.MacPollo.lectorfacturas.R;
@@ -31,8 +27,8 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText cedulaEditText;
-    Button loginButton;
+    EditText cedulaEditText, txtPassword;
+    Button loginButton, btnCambioPass, btnRegistrarse;
     ProgressBar loadingProgressBar;
     final int codeVersion = Parametros.getCodeVersionApp();
 
@@ -42,18 +38,22 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         cedulaEditText = (EditText) findViewById(R.id.loginCedula);
+        txtPassword = (EditText) findViewById(R.id.txtPassword);
         loginButton = (Button) findViewById(R.id.btnLogin);
         loadingProgressBar = (ProgressBar) findViewById(R.id.loading);
+        btnCambioPass = (Button) findViewById(R.id.btnCambioPass);
+        btnRegistrarse = (Button) findViewById(R.id.btnRegistrarse);
 
-        cedulaEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loguear(cedulaEditText.getText().toString());
-            }
-
-            return false;
-        });
+        //cedulaEditText.setOnEditorActionListener((v, actionId, event) -> {
+        //    if (actionId == EditorInfo.IME_ACTION_DONE) {
+        //        loguear(cedulaEditText.getText().toString());
+        //    }
+        //    return false;
+        //});
 
         loginButton.setOnClickListener(v -> loguear(cedulaEditText.getText().toString()));
+        btnRegistrarse.setOnClickListener(r -> registrarse());
+        btnCambioPass.setOnClickListener(c -> cambioClave());
         SharedPreferences preferencias = getSharedPreferences("user-data.xml", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferencias.edit();
         editor.clear();
@@ -63,68 +63,84 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loguear(String cedula) {
+        mostrarComponentes(false, false, true, false, false, false);
         loginButton.setVisibility(View.INVISIBLE);
         cedulaEditText.setVisibility(View.INVISIBLE);
         loadingProgressBar.setVisibility(View.VISIBLE);
+        txtPassword.setVisibility(View.INVISIBLE);
+        btnCambioPass.setVisibility(View.INVISIBLE);
+        btnRegistrarse.setVisibility(View.INVISIBLE);
         if (!isCCValid(cedula)) {
-            showLoginFailed(getString(R.string.invalid_username));
-            loginButton.setVisibility(View.VISIBLE);
-            cedulaEditText.setVisibility(View.VISIBLE);
-            loadingProgressBar.setVisibility(View.INVISIBLE);
+            cedulaEditText.setError(getString(R.string.invalid_username));
+            mostrarComponentes(true, true, false, true, true, true);
         } else {
-            // productivo
-            // String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultafactura";
-            // pruebas
-            String url = "http://ap2021.macpollo.com/apiprueba/api/factura/ingresoconductor";
+            String password = txtPassword.getText().toString();
+            if (password != null && !password.equals("")) {
+                // productivo
+                // String url = "http://ap2021.macpollo.com/apiv1/api/conductor/ingresoconductor";
+                // pruebas
+                String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/ingresoconductor";
 
-            HashMap<String, String> data = new HashMap<>();
-            data.put("documento", cedula);
-            JSONObject parameters = new JSONObject(data);
-            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,
-                    parameters, response -> {
-                try{
-                    if (!response.toString().contains("message")) {
-                        // Get the JSON array
-                        String tipo = response.getString("tipo");
-                        String mensaje = response.getString("mensaje");
-                        if (tipo.equals("S")) {
-                            SharedPreferences preferencias = getSharedPreferences("user-data.xml", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferencias.edit();
-                            editor.putString("cedula", cedula);
-                            editor.apply();
-                            Intent intent = new Intent(this, MainActivity.class);
-                            intent.putExtra("mensaje", mensaje);
-                            startActivity(intent);
-                            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            inputMethodManager.hideSoftInputFromWindow(cedulaEditText.getWindowToken(), 0);
+                HashMap<String, String> data = new HashMap<>();
+                data.put("documento", cedula);
+                data.put("password", password);
+                data.put("version", String.valueOf(Parametros.getCodeVersionApp()));
+                JSONObject parameters = new JSONObject(data);
+                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,
+                        parameters, response -> {
+                    try{
+                        if (!response.toString().contains("message")) {
+                            // Get the JSON array
+                            String tipo = response.getString("tipo");
+                            String mensaje = response.getString("mensaje");
+                            if (tipo.equals("S")) {
+                                SharedPreferences preferencias = getSharedPreferences("user-data.xml", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = preferencias.edit();
+                                editor.putString("cedula", cedula);
+                                editor.apply();
+                                Intent intent = new Intent(this, MainActivity.class);
+                                intent.putExtra("mensaje", mensaje);
+                                startActivity(intent);
+                                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputMethodManager.hideSoftInputFromWindow(cedulaEditText.getWindowToken(), 0);
 
-                            cedulaEditText.setText("", TextView.BufferType.EDITABLE);
+                                cedulaEditText.setText("", TextView.BufferType.EDITABLE);
+                                txtPassword.setText("");
+                            } else {
+                                showLoginFailed(mensaje);
+                            }
+                            mostrarComponentes(true, true, false, true, true, true);
                         } else {
-                            showLoginFailed(getString(R.string.login_failed));
+                            String mensaje = response.getString("message");
+                            showLoginFailed(mensaje);
+                            mostrarComponentes(true, true, false, true, true, true);
                         }
-                        loginButton.setVisibility(View.VISIBLE);
-                        cedulaEditText.setVisibility(View.VISIBLE);
-                        loadingProgressBar.setVisibility(View.INVISIBLE);
-                    } else {
-                        String mensaje = response.getString("message");
-                        showLoginFailed(mensaje);
-                        loginButton.setVisibility(View.VISIBLE);
-                        cedulaEditText.setVisibility(View.VISIBLE);
-                        loadingProgressBar.setVisibility(View.INVISIBLE);
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                        mostrarComponentes(true, true, false, true, true, true);
                     }
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
-            }, error -> {
-                showLoginFailed(error.getMessage());
-                loginButton.setVisibility(View.VISIBLE);
-                cedulaEditText.setVisibility(View.VISIBLE);
-                loadingProgressBar.setVisibility(View.INVISIBLE);
-            });
+                }, error -> {
+                    showLoginFailed(error.getMessage());
+                    mostrarComponentes(true, true, false, true, true, true);
+                });
 
-            // Add a request (in this example, called stringRequest) to your RequestQueue.
-            MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonRequest);
+                // Add a request (in this example, called stringRequest) to your RequestQueue.
+                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonRequest);
+            } else {
+                txtPassword.setError("Por favor digite la contraseña");
+                mostrarComponentes(true, true, false, true, true, true);
+            }
         }
+    }
+
+    private void registrarse() {
+        Intent intent = new Intent(this, VerificarUsuarioActivity.class);
+        startActivity(intent);
+    }
+
+    private void cambioClave() {
+        Intent intent = new Intent(this, VerificarUsuarioActivity.class);
+        startActivity(intent);
     }
 
     // A placeholder username validation check
@@ -145,5 +161,15 @@ public class LoginActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         //Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    private void mostrarComponentes(boolean mostrarCedula, boolean mostrarPassword, boolean mostrarProgreso, boolean mostrarBtningresar,
+                                    boolean mostrarBtnCambioClave, boolean mostrarBtnRegistrarse) {
+        cedulaEditText.setVisibility(mostrarCedula ? View.VISIBLE : View.INVISIBLE);
+        txtPassword.setVisibility(mostrarPassword ? View.VISIBLE : View.INVISIBLE);
+        loadingProgressBar.setVisibility(mostrarProgreso ? View.VISIBLE : View.INVISIBLE);
+        loginButton.setVisibility(mostrarBtningresar ? View.VISIBLE : View.INVISIBLE);
+        btnCambioPass.setVisibility(mostrarBtnCambioClave ? View.VISIBLE : View.INVISIBLE);
+        btnRegistrarse.setVisibility(mostrarBtnRegistrarse ? View.VISIBLE : View.INVISIBLE);
     }
 }

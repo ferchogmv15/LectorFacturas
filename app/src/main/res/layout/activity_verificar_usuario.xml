@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".Actividades.CambioClaveActivity">
+    tools:context=".Actividades.VerificarUsuarioActivity">
 
     <EditText
         android:id="@+id/txtCedula"
@@ -23,41 +23,29 @@
         android:inputType="number"
         android:maxLength="11"
         android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toTopOf="@+id/txtPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/txtPassword"
+        android:id="@+id/txtCodigoVerificacion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="366dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="1dp"
-        android:hint="@string/contrasena"
-        android:inputType="numberPassword"
-        android:maxLength="4"
+        android:layout_marginBottom="15dp"
+        android:hint="@string/cod_verificacion"
+        android:inputType="number"
+        android:maxLength="6"
+        android:selectAllOnFocus="true"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCedula" />
-
-    <EditText
-        android:id="@+id/txtRepertirPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="1dp"
-        android:hint="@string/repita_contrasena"
-        android:inputType="numberPassword"
-        android:maxLength="4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnRegistrarse"
+        android:id="@+id/btnVerificar"
         android:layout_width="326dp"
         android:layout_height="38dp"
         android:layout_gravity="start"
@@ -65,12 +53,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="2dp"
         android:background="@drawable/button_background"
-        android:text="@string/registrarse"
+        android:text="@string/verificar"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtRepertirPassword"
+        app:layout_constraintTop_toBottomOf="@+id/txtCedula"
         app:layout_constraintVertical_bias="0.309" />
 
     <ProgressBar

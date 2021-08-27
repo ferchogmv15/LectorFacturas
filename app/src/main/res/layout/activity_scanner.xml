@@ -81,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:shrinkColumns="*"
-            android:stretchColumns="0,1"
+            android:stretchColumns="*"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -209,7 +209,7 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow >
+            <TableRow android:id="@+id/rowMotivoRechazo">
 
                 <TextView
                     android:id="@+id/textViewlblMotivoRechazo"
@@ -229,7 +229,7 @@
                     android:background="@drawable/border"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#E2021A"
-                    android:textSize="23sp"
+                    android:textSize="21sp"
                     android:textStyle="bold" />
             </TableRow>
 
