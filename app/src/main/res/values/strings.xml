@@ -20,7 +20,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_cc">Nro Cedula</string>
     <string name="action_sign_in">Ingresar</string>
-    <string name="welcome">"Ingreso Correctamente!"</string>
+    <string name="welcome">"Ingreso Exitoso!"</string>
     <string name="invalid_username">Por favor digite un número de cedula válido</string>
     <string name="login_failed">"Solicitar Activación en el Sistema"</string>
 </resources>

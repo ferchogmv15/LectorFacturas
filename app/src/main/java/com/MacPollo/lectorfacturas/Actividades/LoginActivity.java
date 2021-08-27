@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginFailed(String errorString) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.estilo_alerta);
-        builder.setTitle("Error al ingresar").setMessage(errorString)
+        builder.setTitle("Ingreso Denegado").setMessage(errorString)
                 .setNegativeButton("Entendido", (dialog, id) -> {
                     cedulaEditText.requestFocus();
                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
