@@ -101,9 +101,9 @@ public class CambioClaveActivity extends AppCompatActivity {
                                     String mensaje = response.getString("mensaje");
                                     if (tipo.equals("S")) {
                                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                        builder.setTitle("Cambio Exitoso!").setMessage(mensaje).setPositiveButton("Entendido", null);
-                                        Intent intent = new Intent(this, LoginActivity.class);
-                                        startActivity(intent);
+                                        builder.setTitle("Cambio Exitoso!").setMessage(mensaje).setPositiveButton("Entendido", (dialog, which) ->  irAlLogin());
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
                                     } else {
                                         showLoginFailed(mensaje, 1);
                                     }
@@ -137,6 +137,11 @@ public class CambioClaveActivity extends AppCompatActivity {
         } else {
             txtCedula.setError("Por favor digite el número de cedula");
         }
+    }
+
+    private void irAlLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     /**

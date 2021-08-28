@@ -219,7 +219,8 @@
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#E2021A"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewtxtMotivoRechazo"

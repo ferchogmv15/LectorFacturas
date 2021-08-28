@@ -96,6 +96,9 @@ public class ScannerActivity extends AppCompatActivity {
             HashMap<String, String> data = new HashMap<>();
             numeroFactura = texto.substring(texto.indexOf("=") + 1);
             data.put("factura", numeroFactura);
+            if(escaneado) {
+                data.put("encriptada", "X");
+            }
             JSONObject parameters = new JSONObject(data);
             txt.setText(Html.fromHtml("Procesando Factura Nro. <b>" + numeroFactura  +"</b>, Por favor espere..."));
 
@@ -117,6 +120,7 @@ public class ScannerActivity extends AppCompatActivity {
                             //StringBuilder mensaje = new StringBuilder("La factura Nro. ");
                             //mensaje.append("<b>").append(numero).append("</b>").append("<br> por Valor de $");
                             txtNumFactura.setText(factura.getString("Xblnr"));
+                            numeroFactura = factura.getString("Xblnr");
                             String valor = Formatos.formatoValor(String.valueOf(factura.getInt("Valor")));
                             txtValFactura.setText(valor);
                             //mensaje.append("<b>").append(valor).append("</b>");
