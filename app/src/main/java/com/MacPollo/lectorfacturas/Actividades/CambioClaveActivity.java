@@ -1,6 +1,7 @@
 package com.MacPollo.lectorfacturas.Actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,7 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.MacPollo.lectorfacturas.General.ImageAdapter;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.General.Parametros;
 import com.MacPollo.lectorfacturas.R;
@@ -22,12 +25,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.TimerTask;
 
 public class CambioClaveActivity extends AppCompatActivity {
 
     EditText txtCedula, txtPass, txtrepitapass;
     Button btnRegistrarse;
     ProgressBar loadingProgressBar;
+    ViewPager mViewPager;
+    String textoBtnAnterior;
+    TextView textoUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +48,31 @@ public class CambioClaveActivity extends AppCompatActivity {
         loadingProgressBar = (ProgressBar) findViewById(R.id.loading);
 
         btnRegistrarse.setOnClickListener(c -> registrarse());
+        textoUsuario = (TextView) findViewById(R.id.textoParaUsuario);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.getString("cedula") != null && !extras.getString("cedula").equals("")) { // si viene de cambiar clave se bloquea cedula
-            String cedula = extras.getString("cedula");
-            txtCedula.setText(cedula);
-            txtCedula.setEnabled(false);
+        if (extras != null) {
+            if (extras.getString("cedula") != null && !extras.getString("cedula").equals("")) { // se bloquea cedula
+                String cedula = extras.getString("cedula");
+                txtCedula.setText(cedula);
+                txtCedula.setEnabled(false);
+            }
+            if (extras.getString("boton") != null) {
+                textoBtnAnterior = extras.getString("boton");
+                if (extras.getString("boton").equals("cambioClave")) { // si viene de cambiar clave
+                    textoUsuario.setText(getString(R.string.texto_cambio_clave));
+                    btnRegistrarse.setText("Cambiar Contraseña");
+                }
+            }
         }
+
+        mViewPager = (ViewPager) findViewById(R.id.viewPage);
+        ImageAdapter adapterView = new ImageAdapter(this);
+        mViewPager.setAdapter(adapterView);
+
+        // The_slide_timer
+        java.util.Timer timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(new CambioClaveActivity.The_Slide_Timer(), 5000, 10000);
     }
 
     private void registrarse() {
@@ -150,6 +175,23 @@ public class CambioClaveActivity extends AppCompatActivity {
         txtrepitapass.setVisibility(mostrarRepetirPass ? View.VISIBLE : View.INVISIBLE);
         loadingProgressBar.setVisibility(mostrarProgreso ? View.VISIBLE : View.INVISIBLE);
         btnRegistrarse.setVisibility(mostrarBtnRegistrarse ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private class The_Slide_Timer extends TimerTask {
+        @Override
+        public void run() {
+
+            CambioClaveActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mViewPager.getCurrentItem()< ImageAdapter.sliderImageId.length-1) {
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+                    }
+                    else
+                        mViewPager.setCurrentItem(0);
+                }
+            });
+        }
     }
 
 }

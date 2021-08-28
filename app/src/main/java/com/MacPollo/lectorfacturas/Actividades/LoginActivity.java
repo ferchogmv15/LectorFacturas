@@ -1,6 +1,7 @@
 package com.MacPollo.lectorfacturas.Actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.MacPollo.lectorfacturas.General.ImageAdapter;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.General.Parametros;
 import com.MacPollo.lectorfacturas.R;
@@ -24,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.TimerTask;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -31,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton, btnCambioPass, btnRegistrarse;
     ProgressBar loadingProgressBar;
     final int codeVersion = Parametros.getCodeVersionApp();
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,14 @@ public class LoginActivity extends AppCompatActivity {
         editor.clear();
         editor.apply();
 
+        mViewPager = (ViewPager) findViewById(R.id.viewPage);
+        ImageAdapter adapterView = new ImageAdapter(this);
+        mViewPager.setAdapter(adapterView);
+
+        // The_slide_timer
+        java.util.Timer timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(new The_Slide_Timer(), 5000, 10000);
+
         //Toast.makeText(getApplicationContext(), String.valueOf(versionCode), Toast.LENGTH_SHORT).show();
     }
 
@@ -84,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                 HashMap<String, String> data = new HashMap<>();
                 data.put("documento", cedula);
                 data.put("password", password);
-                data.put("version", String.valueOf(Parametros.getCodeVersionApp()));
+                data.put("version", String.valueOf(codeVersion));
                 JSONObject parameters = new JSONObject(data);
                 JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,
                         parameters, response -> {
@@ -135,11 +147,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void registrarse() {
         Intent intent = new Intent(this, VerificarUsuarioActivity.class);
+        intent.putExtra("boton", "registrarse");
         startActivity(intent);
     }
 
     private void cambioClave() {
         Intent intent = new Intent(this, VerificarUsuarioActivity.class);
+        intent.putExtra("boton", "cambioClave");
         startActivity(intent);
     }
 
@@ -171,5 +185,22 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setVisibility(mostrarBtningresar ? View.VISIBLE : View.INVISIBLE);
         btnCambioPass.setVisibility(mostrarBtnCambioClave ? View.VISIBLE : View.INVISIBLE);
         btnRegistrarse.setVisibility(mostrarBtnRegistrarse ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private class The_Slide_Timer extends TimerTask {
+        @Override
+        public void run() {
+
+            LoginActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mViewPager.getCurrentItem()< ImageAdapter.sliderImageId.length-1) {
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+                    }
+                    else
+                        mViewPager.setCurrentItem(0);
+                }
+            });
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.MacPollo.lectorfacturas.Actividades;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -11,10 +12,12 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.MacPollo.lectorfacturas.General.ImageAdapter;
 import com.MacPollo.lectorfacturas.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.CAMERA
     };
     int PERM_CODE = 11;
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
         btnScan.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), ScannerActivity.class)));
         btnScanRuta = (Button) findViewById(R.id.btnScanRuta);
         btnScanRuta.setOnClickListener(c -> startActivity(new Intent(getApplicationContext(), ScannerRutaActivity.class)));
+
+        mViewPager = (ViewPager) findViewById(R.id.viewPage);
+        ImageAdapter adapterView = new ImageAdapter(this);
+        mViewPager.setAdapter(adapterView);
+
+        // The_slide_timer
+        java.util.Timer timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(new MainActivity.The_Slide_Timer(), 5000, 10000);
     }
 
     private void updateUiWithUser(String mensaje) {
@@ -64,5 +76,22 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private class The_Slide_Timer extends TimerTask {
+        @Override
+        public void run() {
+
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mViewPager.getCurrentItem()< ImageAdapter.sliderImageId.length-1) {
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+                    }
+                    else
+                        mViewPager.setCurrentItem(0);
+                }
+            });
+        }
     }
 }

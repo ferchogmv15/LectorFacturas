@@ -10,6 +10,8 @@
     <string name="verificar_pago_factura">Verificar Pago Factura</string>
     <string name="facturas_pago_en_linea_en_mi_ruta">Facturas pago en linea en mi ruta</string>
     <string name="title_activity_scanner_ruta">ScannerRutaActivity</string>
+    <string name="texto_cambio_clave">Digite su nueva contraseña</string>
+    <string name="texto_registrarse">Digite una contraseña de acceso</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

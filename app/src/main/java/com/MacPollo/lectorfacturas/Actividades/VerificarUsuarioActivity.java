@@ -1,6 +1,7 @@
 package com.MacPollo.lectorfacturas.Actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.MacPollo.lectorfacturas.Enums.EEstadosVerificacion;
+import com.MacPollo.lectorfacturas.General.ImageAdapter;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.General.Parametros;
 import com.MacPollo.lectorfacturas.R;
@@ -23,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.TimerTask;
 
 public class VerificarUsuarioActivity extends AppCompatActivity {
 
@@ -32,6 +35,8 @@ public class VerificarUsuarioActivity extends AppCompatActivity {
     int codVerificacion = -1;
     EEstadosVerificacion estado;
     ProgressBar loadingProgressBar;
+    ViewPager mViewPager;
+    String textoBtnAnterior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,19 @@ public class VerificarUsuarioActivity extends AppCompatActivity {
 
         estado = EEstadosVerificacion.VERIFICARCEDULA;
         loadingProgressBar = (ProgressBar) findViewById(R.id.loading);
+
+        mViewPager = (ViewPager) findViewById(R.id.viewPage);
+        ImageAdapter adapterView = new ImageAdapter(this);
+        mViewPager.setAdapter(adapterView);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            textoBtnAnterior = extras.getString("boton");
+        }
+
+        // The_slide_timer
+        java.util.Timer timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(new VerificarUsuarioActivity.The_Slide_Timer(), 5000, 10000);
     }
 
     private void verificar() {
@@ -72,6 +90,11 @@ public class VerificarUsuarioActivity extends AppCompatActivity {
                                 codVerificacion = Integer.parseInt(mensaje);
                                 mostrarComponentes(false, true, false, true);
                                 estado = EEstadosVerificacion.VERIFICARCODIGO;
+                                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                                builder.setTitle("").setMessage("A su celular registrado hemos enviado un mensaje de texto con un código de verificación, por favor digítelo a continuación").setPositiveButton("Entendido", null);
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
                             } else {
                                 mostrarComponentes(true, false, false, true);
                                 showAlertFailed(mensaje, 1);
@@ -101,10 +124,12 @@ public class VerificarUsuarioActivity extends AppCompatActivity {
                 && codVerificacion != -1 && codVerificacion == Integer.parseInt(txtCodVerificacion.getText().toString())) { // verificando codigo verificacion enviado
                 Intent intent = new Intent(this, CambioClaveActivity.class);
                 intent.putExtra("cedula", txtCedula.getText().toString());
+                intent.putExtra("boton", textoBtnAnterior);
                 startActivity(intent);
 
                 mostrarComponentes(true, false, false, true);
                 txtCedula.setText("");
+                txtCodVerificacion.setText("");
             } else {
                 txtCodVerificacion.setError("El código de verificación no coincide con el enviado, por favor revise" );
             }
@@ -140,5 +165,20 @@ public class VerificarUsuarioActivity extends AppCompatActivity {
         btnVerificar.setVisibility(mostrarBoton ? View.VISIBLE : View.INVISIBLE);
     }
 
+    private class The_Slide_Timer extends TimerTask {
+        @Override
+        public void run() {
 
+            VerificarUsuarioActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mViewPager.getCurrentItem()< ImageAdapter.sliderImageId.length-1) {
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+                    }
+                    else
+                        mViewPager.setCurrentItem(0);
+                }
+            });
+        }
+    }
 }
