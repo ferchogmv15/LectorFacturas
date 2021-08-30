@@ -18,7 +18,13 @@ import com.MacPollo.lectorfacturas.General.ImageAdapter;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.General.Parametros;
 import com.MacPollo.lectorfacturas.R;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
@@ -109,8 +115,14 @@ public class VerificarUsuarioActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }, error -> {
+                    if (error instanceof NetworkError || error instanceof ServerError || error instanceof AuthFailureError ||
+                        error instanceof ParseError || error instanceof NoConnectionError || error instanceof TimeoutError) {
+                        showAlertFailed(getString(R.string.error_internet), 1);
+                    } else {
+                        showAlertFailed(error.getMessage(), 1);
+                    }
                     mostrarComponentes(true, false, false, true);
-                    showAlertFailed(error.getMessage(), 1);
+
                 });
 
                 // Add a request (in this example, called stringRequest) to your RequestQueue.

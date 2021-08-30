@@ -19,7 +19,13 @@ import com.MacPollo.lectorfacturas.General.ImageAdapter;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.General.Parametros;
 import com.MacPollo.lectorfacturas.R;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
@@ -132,7 +138,12 @@ public class LoginActivity extends AppCompatActivity {
                         mostrarComponentes(true, true, false, true, true, true);
                     }
                 }, error -> {
-                    showLoginFailed(error.getMessage());
+                    if (error instanceof NetworkError || error instanceof ServerError || error instanceof AuthFailureError ||
+                        error instanceof ParseError || error instanceof NoConnectionError || error instanceof TimeoutError) {
+                        showLoginFailed(getString(R.string.error_internet));
+                    } else {
+                        showLoginFailed(error.getMessage());
+                    }
                     mostrarComponentes(true, true, false, true, true, true);
                 });
 

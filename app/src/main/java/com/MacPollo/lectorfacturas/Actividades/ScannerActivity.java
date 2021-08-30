@@ -23,7 +23,13 @@ import android.widget.Toast;
 import com.MacPollo.lectorfacturas.General.Formatos;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.R;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -42,7 +48,7 @@ public class ScannerActivity extends AppCompatActivity {
     TextView txt;
     CodeScanner codeScanner;
     CodeScannerView codeScannerView;
-    Button btnDigitar;
+    Button btnDigitar, btnEscaner;
     CheckBox checkBoxVerificarFac;
     String cedula, numeroFactura;
     ConstraintLayout layoutResultados;
@@ -68,6 +74,9 @@ public class ScannerActivity extends AppCompatActivity {
 
         btnDigitar = (Button) findViewById(R.id.btnDigitar);
         btnDigitar.setOnClickListener(v -> showAlertDigitar());
+
+        btnEscaner = (Button) findViewById(R.id.btnVolverEscaner);
+        btnEscaner.setOnClickListener(e -> showEscanerAgain());
 
         checkBoxVerificarFac = (CheckBox) findViewById(R.id.checkBoxVerificarFac);
         checkBoxVerificarFac.setOnClickListener(v -> enviarVerificacion());
@@ -161,15 +170,25 @@ public class ScannerActivity extends AppCompatActivity {
                 }
             }, error -> {
                 txt.setText(Html.fromHtml("Factura Nro. <b>" + numeroFactura  +"</b><br>"));
-                txt.append("Error al consultar la factura: " + error.getMessage());
+                if (error instanceof NetworkError || error instanceof ServerError || error instanceof AuthFailureError ||
+                    error instanceof ParseError || error instanceof NoConnectionError || error instanceof TimeoutError) {
+                    txt.append("Error al consultar la factura: " + getString(R.string.error_internet));
+                } else {
+                    txt.append("Error al consultar la factura: " + error.getMessage());
+                }
                 mostrarTabla(false);
             });
 
             // Add a request (in this example, called stringRequest) to your RequestQueue.
             MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonRequest);
         } else {
-            txt.setText(Html.fromHtml("Texto: <b>" + texto  +"</b><br>"));
-            txt.append("No se encuentra el numero de factura, Por favor revise");
+            if(escaneado) {
+                txt.setText(Html.fromHtml("Texto: <b>" + texto.substring(0, texto.length() > 10 ? 10 : texto.length())  +"</b><br>"));
+                txt.append("En el código escaneado NO se encuentra el numero de factura, Por favor revise");
+            } else {
+                txt.setText(Html.fromHtml("Texto: <b>" + texto  +"</b><br>"));
+                txt.append("No se encuentra el numero de factura, Por favor revise");
+            }
             mostrarTabla(false);
         }
     }
@@ -191,7 +210,6 @@ public class ScannerActivity extends AppCompatActivity {
         } else {
             return str.matches("(\\d){1,10}");  //match a number entero de 1 al 10 digitos
         }
-
     }
 
     public static String completar(String input){
@@ -254,7 +272,16 @@ public class ScannerActivity extends AppCompatActivity {
         }
     }
 
+    private void showEscanerAgain() {
+        onResume();
+        codeScannerView.setVisibility(View.VISIBLE);
+        btnEscaner.setVisibility(View.INVISIBLE);
+    }
+
     private void showAlertDigitar() {
+        onPause();
+        codeScannerView.setVisibility(View.INVISIBLE);
+        btnEscaner.setVisibility(View.VISIBLE);
         TextInputLayout textInputLayout = new TextInputLayout(ScannerActivity.this);
         EditText input = new EditText(ScannerActivity.this);
         input.setInputType(EditorInfo.TYPE_CLASS_NUMBER);

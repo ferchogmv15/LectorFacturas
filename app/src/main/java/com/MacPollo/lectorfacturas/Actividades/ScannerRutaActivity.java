@@ -12,7 +12,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.MacPollo.lectorfacturas.Actividades.FacturasRutaActivity;
 import com.MacPollo.lectorfacturas.R;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -43,7 +42,7 @@ public class ScannerRutaActivity extends AppCompatActivity {
         codeScanner.setDecodeCallback(result -> runOnUiThread(() -> {
             String codigo = result.getText();
 
-            consultarContrato(codigo);
+            consultarContrato(codigo, true);
         }));
 
         btnDigitar = (Button) findViewById(R.id.btnDigitar);
@@ -53,14 +52,36 @@ public class ScannerRutaActivity extends AppCompatActivity {
     /**
      * Metodo para hacer la consulta del numero de contrato
      * @param codigo numero de contrato
+     * @param escaneado
      */
-    private void consultarContrato(String codigo) {
-        Intent intent = new Intent(this, FacturasRutaActivity.class);
-        intent.putExtra("codigo", codigo);
-        startActivity(intent);
+    private void consultarContrato(String codigo, boolean escaneado) {
+        if (esValido(codigo)) {
+            Intent intent = new Intent(this, FacturasRutaActivity.class);
+            intent.putExtra("codigo", codigo);
+            startActivity(intent);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Advertencia")
+                    .setMessage(escaneado ? "El texto escaneado no es un numero de contrato, por favor verifique" : "Digite un numero de contrato valido")
+                    .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestCamera();
+                        }})
+                    .setNegativeButton(R.string.option_cancelar, null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            if (!escaneado) onResume();
+        }
+    }
+
+    public static boolean esValido(String codigo) {
+        return codigo.matches("(\\d){1,10}");  //match a number entero de 1 al 10 digitos
     }
 
     private void showAlertDigitar() {
+        onPause();
         TextInputLayout textInputLayout = new TextInputLayout(ScannerRutaActivity.this);
         EditText input = new EditText(ScannerRutaActivity.this);
         input.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
@@ -76,9 +97,14 @@ public class ScannerRutaActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String texto = String.valueOf(input.getText());
-                        consultarContrato(texto);
+                        consultarContrato(texto, false);
                     }})
-                .setNegativeButton(R.string.option_cancelar, null);
+                .setNegativeButton(R.string.option_cancelar, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
+                    }
+                });
 
         AlertDialog dialog = builder.create();
         dialog.show();

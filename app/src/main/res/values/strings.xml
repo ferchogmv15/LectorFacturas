@@ -30,6 +30,7 @@
     <string name="option_cancelar">Cancelar</string>
     <string name="option_scanear">Escanear</string>
     <string name="option_digitar">Digitar</string>
+    <string name="option_volver_escarner">Volver a Escaner</string>
     <string name="option_Consultar">Consultar</string>
     <string name="title_Consulta">Consulta</string>
     <string name="digite_nro_factura">Digite el numero de factura</string>
@@ -43,4 +44,5 @@
     <string name="repita_contrasena">Repetir contraseña</string>
 
     <string name="verificar_factura">Verificar factura</string>
+    <string name="error_internet">Error de comunicación, inténtelo mas tarde</string>
 </resources>

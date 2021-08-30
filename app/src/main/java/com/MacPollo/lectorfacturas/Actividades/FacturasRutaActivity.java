@@ -13,7 +13,13 @@ import com.MacPollo.lectorfacturas.General.Formatos;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.R;
 import com.MacPollo.lectorfacturas.tablas.TablaFacRuta;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
@@ -104,7 +110,12 @@ public class FacturasRutaActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }, error -> {
-                    tvErrorContrato.setText("Error al consultar el contrato: " + error.getMessage());
+                    if (error instanceof NetworkError || error instanceof ServerError || error instanceof AuthFailureError ||
+                        error instanceof ParseError || error instanceof NoConnectionError || error instanceof TimeoutError) {
+                        tvErrorContrato.setText("Error al consultar el contrato: " + getString(R.string.error_internet));
+                    } else {
+                        tvErrorContrato.setText("Error al consultar el contrato: " + error.getMessage());
+                    }
                 });
 
                 // Add a request (in this example, called stringRequest) to your RequestQueue.
@@ -121,6 +132,6 @@ public class FacturasRutaActivity extends AppCompatActivity {
     }
 
     private String devolverSinCeros(String valor) {
-        return String.valueOf(Integer.parseInt(valor));
+        return valor.replaceFirst("^0+(?!$)", "");
     }
 }
