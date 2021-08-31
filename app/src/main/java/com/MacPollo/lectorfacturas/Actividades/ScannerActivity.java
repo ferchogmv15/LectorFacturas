@@ -53,6 +53,7 @@ public class ScannerActivity extends AppCompatActivity {
     String cedula, numeroFactura;
     ConstraintLayout layoutResultados;
     TableRow rowMotivo;
+    int saldo = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,7 @@ public class ScannerActivity extends AppCompatActivity {
         String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultafactura";
         // desarrollo
         //String url = "http://192.168.254.164:8000/api/factura/consultafactura";
+        saldo = -1;
         if (esValido(texto, escaneado)) {
             HashMap<String, String> data = new HashMap<>();
             numeroFactura = texto.substring(texto.indexOf("=") + 1);
@@ -139,9 +141,10 @@ public class ScannerActivity extends AppCompatActivity {
                             String abono = Formatos.formatoValor(String.valueOf(factura.getInt("Abono")));
                             //mensaje.append("Valor pagado $").append("<b>").append(abono).append("</b>");
                             txtvalPago.setText(abono);
-                            String saldo = Formatos.formatoValor(String.valueOf(factura.getInt("Saldo")));
+                            saldo = factura.getInt("Saldo");
+                            String saldoStr = Formatos.formatoValor(String.valueOf(saldo));
                             //mensaje.append("<br> Saldo $").append("<b>").append(saldo).append("</b>");
-                            txtValSaldo.setText(saldo);
+                            txtValSaldo.setText(saldoStr);
 
                             mostrarTabla(true);
                             String motivo = factura.getString("Textoerror");
@@ -235,6 +238,7 @@ public class ScannerActivity extends AppCompatActivity {
             HashMap<String, String> data = new HashMap<>();
             data.put("cedulacon", cedula);
             data.put("factura", numeroFactura);
+            data.put("saldo", String.valueOf(saldo));
             JSONObject parameters = new JSONObject(data);
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,
                     parameters, response -> {
@@ -267,8 +271,6 @@ public class ScannerActivity extends AppCompatActivity {
 
             // Add a request (in this example, called stringRequest) to your RequestQueue.
             MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonRequest);
-        } else {
-            Toast.makeText(getApplicationContext(), "NOT checked", Toast.LENGTH_SHORT).show();
         }
     }
 
