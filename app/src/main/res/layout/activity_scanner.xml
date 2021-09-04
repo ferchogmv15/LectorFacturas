@@ -243,6 +243,7 @@
                     android:textAlignment="textStart"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#E2021A"
+                    android:layout_width="320dp"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
