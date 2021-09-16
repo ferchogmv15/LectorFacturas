@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.MacPollo.lectorfacturas.General.VerificarPermisos;
 import com.MacPollo.lectorfacturas.R;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -32,6 +33,7 @@ public class ScannerRutaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner_ruta);
 
+        VerificarPermisos.checkpermissions(this);
         codeScannerView =  (CodeScannerView) findViewById(R.id.scannerView);
         codeScanner = new CodeScanner(this, codeScannerView);
         List<BarcodeFormat> b = new ArrayList<>();

@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputFilter;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.MacPollo.lectorfacturas.General.Formatos;
 import com.MacPollo.lectorfacturas.General.MySingleton;
+import com.MacPollo.lectorfacturas.General.VerificarPermisos;
 import com.MacPollo.lectorfacturas.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -60,6 +62,8 @@ public class ScannerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
+        VerificarPermisos.checkpermissions(this);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         txt = (TextView) findViewById(R.id.textView);
         codeScannerView =  (CodeScannerView) findViewById(R.id.scannerView);
         codeScanner = new CodeScanner(this, codeScannerView);

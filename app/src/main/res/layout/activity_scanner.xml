@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E2E1DF"
-    android:configChanges="orientation"
-    android:screenOrientation="locked"
     tools:context=".Actividades.ScannerActivity">
 
     <Button android:id="@+id/btnDigitar"

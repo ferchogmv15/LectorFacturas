@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.MacPollo.lectorfacturas.General.ImageAdapter;
+import com.MacPollo.lectorfacturas.General.VerificarPermisos;
 import com.MacPollo.lectorfacturas.R;
 
 import java.util.ArrayList;
@@ -22,10 +23,6 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     Button btnScan, btnScanRuta;
-    String[] permissions = {
-            Manifest.permission.CAMERA
-    };
-    int PERM_CODE = 11;
     ViewPager mViewPager;
 
     @Override
@@ -33,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        checkpermissions();
+        VerificarPermisos.checkpermissions(this);
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
@@ -62,20 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private boolean checkpermissions(){
-        List<String> listofpermisssions = new ArrayList<>();
-        for (String perm: permissions){
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), perm) != PackageManager.PERMISSION_GRANTED){
-                listofpermisssions.add(perm);
-            }
-        }
-        if (!listofpermisssions.isEmpty()){
-            ActivityCompat.requestPermissions(this, listofpermisssions.toArray(new String[listofpermisssions.size()]), PERM_CODE);
-            return false;
-        }
-        return true;
     }
 
     private class The_Slide_Timer extends TimerTask {
