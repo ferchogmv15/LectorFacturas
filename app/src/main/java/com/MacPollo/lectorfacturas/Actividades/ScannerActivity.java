@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -13,13 +12,11 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.MacPollo.lectorfacturas.General.Formatos;
 import com.MacPollo.lectorfacturas.General.MySingleton;
@@ -54,7 +51,6 @@ public class ScannerActivity extends AppCompatActivity {
     CheckBox checkBoxVerificarFac;
     String cedula, numeroFactura;
     ConstraintLayout layoutResultados;
-    TableRow rowMotivo;
     int saldo = -1;
 
     @Override
@@ -90,7 +86,6 @@ public class ScannerActivity extends AppCompatActivity {
         cedula = preferencias.getString("cedula", "");
 
         layoutResultados = (ConstraintLayout) findViewById(R.id.LayoutResultados);
-        rowMotivo = (TableRow) findViewById(R.id.rowMotivoRechazo);
         //Toast.makeText(getApplicationContext(), cedula, Toast.LENGTH_SHORT).show();
     }
 
@@ -129,8 +124,8 @@ public class ScannerActivity extends AppCompatActivity {
                             TextView txtCliente = (TextView) findViewById(R.id.textViewtxtCli);
                             TextView txtvalPago = (TextView) findViewById(R.id.textViewtxtValPago);
                             TextView txtValSaldo = (TextView) findViewById(R.id.textViewtxtValSaldo);
-                            TextView txtMotivoRechazo = (TextView) findViewById(R.id.textViewtxtMotivoRechazo);
-                            TableRow rowPendiente = (TableRow) findViewById(R.id.rowPedidoEnProceso);
+                            TextView txtRechazoOProceso = (TextView) findViewById(R.id.txtRechazoOProceso);
+                            TableRow rowRechazoOProceso = (TableRow) findViewById(R.id.rowRechazoOProceso);
 
                             JSONObject factura = response.getJSONObject("TFactura");
                             //StringBuilder mensaje = new StringBuilder("La factura Nro. ");
@@ -154,15 +149,14 @@ public class ScannerActivity extends AppCompatActivity {
                             String motivo = factura.getString("Textoerror");
                             String pendiente = factura.getString("Pendiente");
                             if (!pendiente.equals("")) {
-                                //rowMotivo.setVisibility(View.INVISIBLE);
-                                rowPendiente.setVisibility(View.VISIBLE);
+                                rowRechazoOProceso.setVisibility(View.VISIBLE);
+                                txtRechazoOProceso.setText(R.string.pago_en_proceso);
                             } else {
-                                rowPendiente.setVisibility(View.INVISIBLE);
                                 if (motivo != null && !motivo.equals("")) {
-                                    txtMotivoRechazo.setText(motivo);
-                                    //rowMotivo.setVisibility(View.VISIBLE);
+                                    txtRechazoOProceso.setText(R.string.motivo_rechazo + motivo);
+                                    rowRechazoOProceso.setVisibility(View.VISIBLE);
                                 } else {
-                                    //rowMotivo.setVisibility(View.INVISIBLE);
+                                    rowRechazoOProceso.setVisibility(View.INVISIBLE);
                                 }
                             }
                             mostrarTabla(true);
