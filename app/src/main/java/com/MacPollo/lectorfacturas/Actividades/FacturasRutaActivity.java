@@ -72,20 +72,35 @@ public class FacturasRutaActivity extends AppCompatActivity {
                                 tabla.agregarCabecera(R.array.cabecera_tabla_fac_ruta);
                                 if(transporte.get("item") instanceof JSONObject) {
                                     JSONObject item = transporte.getJSONObject("item");
-                                    ArrayList<String> elementos = new ArrayList<String>();
+                                    ArrayList<String> elementos = new ArrayList<>();
                                     elementos.add(item.getString("Xblnr"));
                                     elementos.add(Formatos.formatoValor(String.valueOf(item.getInt("Pago"))));
                                     tabla.agregarFilaTabla(elementos);
                                 } else if (transporte.get("item") instanceof JSONArray) {
                                     JSONArray items = transporte.getJSONArray("item");
+                                    String numFac = "";
+                                    int sumatoria = 0;
+                                    ArrayList<String> elementos = new ArrayList<>();
                                     for(int i = 0; i < items.length(); i++)
                                     {
                                         JSONObject item = items.getJSONObject(i);
-                                        ArrayList<String> elementos = new ArrayList<String>();
-                                        elementos.add(item.getString("Xblnr"));
-                                        elementos.add(Formatos.formatoValor(String.valueOf(item.getInt("Pago"))));
-                                        tabla.agregarFilaTabla(elementos);
+                                        if (numFac.equals("")) { // primera vez
+                                            numFac = item.getString("Xblnr");
+                                            sumatoria = item.getInt("Pago");
+                                            elementos.add(item.getString("Xblnr"));
+                                        } else if (numFac.equals(item.getString("Xblnr"))) { // si sigue en la misma factura
+                                            sumatoria += item.getInt("Pago");
+                                        } else {
+                                            elementos.add(Formatos.formatoValor(String.valueOf(sumatoria)));
+                                            tabla.agregarFilaTabla(elementos);
+                                            elementos = new ArrayList<>();
+                                            numFac = item.getString("Xblnr");
+                                            sumatoria = item.getInt("Pago");
+                                            elementos.add(item.getString("Xblnr"));
+                                        }
                                     }
+                                    elementos.add(Formatos.formatoValor(String.valueOf(sumatoria)));
+                                    tabla.agregarFilaTabla(elementos);
                                     //for (int i = 0; i<  30; i++) {
                                         //ArrayList<String> elementos = new ArrayList<String>();
                                         //elementos.add("prueba" + i);

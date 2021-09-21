@@ -130,6 +130,7 @@ public class ScannerActivity extends AppCompatActivity {
                             TextView txtvalPago = (TextView) findViewById(R.id.textViewtxtValPago);
                             TextView txtValSaldo = (TextView) findViewById(R.id.textViewtxtValSaldo);
                             TextView txtMotivoRechazo = (TextView) findViewById(R.id.textViewtxtMotivoRechazo);
+                            TableRow rowPendiente = (TableRow) findViewById(R.id.rowPedidoEnProceso);
 
                             JSONObject factura = response.getJSONObject("TFactura");
                             //StringBuilder mensaje = new StringBuilder("La factura Nro. ");
@@ -150,14 +151,21 @@ public class ScannerActivity extends AppCompatActivity {
                             //mensaje.append("<br> Saldo $").append("<b>").append(saldo).append("</b>");
                             txtValSaldo.setText(saldoStr);
 
-                            mostrarTabla(true);
                             String motivo = factura.getString("Textoerror");
-                            if (motivo != null && !motivo.equals("")) {
-                                txtMotivoRechazo.setText(motivo);
-                                rowMotivo.setVisibility(View.VISIBLE);
+                            String pendiente = factura.getString("Pendiente");
+                            if (!pendiente.equals("")) {
+                                //rowMotivo.setVisibility(View.INVISIBLE);
+                                rowPendiente.setVisibility(View.VISIBLE);
                             } else {
-                                rowMotivo.setVisibility(View.INVISIBLE);
+                                rowPendiente.setVisibility(View.INVISIBLE);
+                                if (motivo != null && !motivo.equals("")) {
+                                    txtMotivoRechazo.setText(motivo);
+                                    //rowMotivo.setVisibility(View.VISIBLE);
+                                } else {
+                                    //rowMotivo.setVisibility(View.INVISIBLE);
+                                }
                             }
+                            mostrarTabla(true);
 
                         } else {
                             txt.setText(Html.fromHtml("Factura Nro. <b>" + numeroFactura  +"</b><br>"));

@@ -95,9 +95,11 @@ public class VerificarUsuarioActivity extends AppCompatActivity {
                             if (tipo.equals("S")) {
                                 codVerificacion = Integer.parseInt(mensaje);
                                 mostrarComponentes(false, true, false, true);
+                                String celular = response.getString("celular");
+                                celular = celular.substring(celular.length() - 4);
                                 estado = EEstadosVerificacion.VERIFICARCODIGO;
                                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                                builder.setTitle("").setMessage("A su celular registrado hemos enviado un mensaje de texto con un código de verificación, por favor digítelo a continuación").setPositiveButton("Entendido", null);
+                                builder.setTitle("").setMessage("A su celular registrado terminado en XXX" + celular + " hemos enviado un mensaje de texto con un código de verificación, por favor digítelo a continuación").setPositiveButton("Entendido", null);
 
                                 AlertDialog dialog = builder.create();
                                 dialog.show();

@@ -92,7 +92,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:shrinkColumns="*"
-            android:stretchColumns="*"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -256,7 +255,26 @@
                     android:textColor="#E2021A"
                     android:textSize="21sp"
                     android:textStyle="bold" />
+
+
             </TableRow>
+
+            <TableRow android:id="@+id/rowPedidoEnProceso" >
+
+                <TextView android:layout_span="2"
+                    android:layout_height="40dp"
+                    android:paddingLeft="5dp"
+                    android:visibility="invisible"
+                    android:text="@string/pago_en_proceso"
+                    android:background="@drawable/border"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#E2021A"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+
 
         </TableLayout>
 
