@@ -47,9 +47,9 @@ public class FacturasRutaActivity extends AppCompatActivity {
             if (isSoloNumero(codigo)) {
                 tvNumeroContrato.setText("Contrato transporte \n No: " + devolverSinCeros(codigo));
                 // productivo
-                // String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultacontrato";
+                 String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultacontrato";
                 // pruebas
-                String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultacontrato";
+                //String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultacontrato";
                 // desarrollo
                 //String url = "http://192.168.1.11:8000/api/factura/consultacontrato";
                 //String url = "http://192.168.1.11:8081/consultacontrato.php";

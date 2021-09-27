@@ -95,9 +95,9 @@ public class LoginActivity extends AppCompatActivity {
             String password = txtPassword.getText().toString();
             if (password != null && !password.equals("")) {
                 // productivo
-                // String url = "http://ap2021.macpollo.com/apiv1/api/conductor/ingresoconductor";
+                 String url = "http://ap2021.macpollo.com/apiv1/api/conductor/ingresoconductor";
                 // pruebas
-                String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/ingresoconductor";
+                //String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/ingresoconductor";
 
                 HashMap<String, String> data = new HashMap<>();
                 data.put("documento", cedula);

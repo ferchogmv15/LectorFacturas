@@ -96,9 +96,9 @@ public class ScannerActivity extends AppCompatActivity {
      */
     private void consultaFactura(String texto, boolean escaneado) {
         // productivo
-        // String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultafactura";
+        String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultafactura";
         // pruebas
-        String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultafactura";
+        //String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultafactura";
         // desarrollo
         //String url = "http://192.168.254.164:8000/api/factura/consultafactura";
         saldo = -1;

@@ -87,9 +87,9 @@ public class CambioClaveActivity extends AppCompatActivity {
                 if (txtrepitapass.getText().toString() != null && !txtrepitapass.getText().toString().equals("")) {
                     if (txtPass.getText().toString().equals(txtrepitapass.getText().toString())) {
                         // productivo
-                        // String url = "http://ap2021.macpollo.com/apiv1/api/conductor/nuevapasswordcconductor";
+                        String url = "http://ap2021.macpollo.com/apiv1/api/conductor/nuevapasswordcconductor";
                         // pruebas
-                        String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/nuevapasswordcconductor";
+                        // String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/nuevapasswordcconductor";
                         mostrarComponentes(false, false, false, true, false);
                         String password = txtPass.getText().toString();
 

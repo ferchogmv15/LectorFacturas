@@ -76,9 +76,9 @@ public class VerificarUsuarioActivity extends AppCompatActivity {
         if (estado.compareTo(EEstadosVerificacion.VERIFICARCEDULA) == 0) { // esta verificando cedula
             if (txtCedula.getText().toString() != null && !txtCedula.getText().toString().equals("")) { //
                 // productivo
-                // String url = "http://ap2021.macpollo.com/apiv1/api/conductor/verificardocconductor";
+                 String url = "http://ap2021.macpollo.com/apiv1/api/conductor/verificardocconductor";
                 // pruebas
-                String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/verificardocconductor";
+                //String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/verificardocconductor";
                 mostrarComponentes(false, false, true, false);
 
                 HashMap<String, String> data = new HashMap<>();
