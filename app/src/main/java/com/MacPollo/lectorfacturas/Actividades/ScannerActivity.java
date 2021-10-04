@@ -49,7 +49,7 @@ public class ScannerActivity extends AppCompatActivity {
     CodeScannerView codeScannerView;
     Button btnDigitar, btnEscaner;
     CheckBox checkBoxVerificarFac;
-    String cedula, numeroFactura;
+    String cedula, numeroFactura, URL_API;
     ConstraintLayout layoutResultados;
     int saldo = -1;
 
@@ -87,6 +87,7 @@ public class ScannerActivity extends AppCompatActivity {
 
         layoutResultados = (ConstraintLayout) findViewById(R.id.LayoutResultados);
         //Toast.makeText(getApplicationContext(), cedula, Toast.LENGTH_SHORT).show();
+        URL_API = getString(R.string.url_api);
     }
 
     /**
@@ -96,7 +97,7 @@ public class ScannerActivity extends AppCompatActivity {
      */
     private void consultaFactura(String texto, boolean escaneado) {
         // productivo
-        String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultafactura";
+        String url = URL_API + "factura/consultafactura";
         // pruebas
         //String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultafactura";
         // desarrollo
@@ -237,7 +238,7 @@ public class ScannerActivity extends AppCompatActivity {
     private void enviarVerificacion() {
         if (checkBoxVerificarFac.isChecked()) {
             // productivo
-            String url = "http://ap2021.macpollo.com/apiv1/api/factura/verificarfacturaconductor";
+            String url = URL_API + "factura/verificarfacturaconductor";
             // pruebas
             //String url = "http://ap2021.macpollo.com/apiprueba/api/factura/verificarfacturaconductor";
 

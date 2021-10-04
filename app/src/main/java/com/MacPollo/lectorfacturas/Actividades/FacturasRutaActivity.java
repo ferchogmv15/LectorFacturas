@@ -33,11 +33,13 @@ public class FacturasRutaActivity extends AppCompatActivity {
 
     TextView tvNumeroContrato;
     TextView tvErrorContrato;
+    String URL_API;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facturas_ruta);
+        URL_API = getString(R.string.url_api);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -47,7 +49,7 @@ public class FacturasRutaActivity extends AppCompatActivity {
             if (isSoloNumero(codigo)) {
                 tvNumeroContrato.setText("Contrato transporte \n No: " + devolverSinCeros(codigo));
                 // productivo
-                String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultacontrato";
+                String url = URL_API + "factura/consultacontrato";
                 // pruebas
                 // String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultacontrato";
                 // desarrollo

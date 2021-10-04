@@ -39,13 +39,14 @@ public class CambioClaveActivity extends AppCompatActivity {
     Button btnRegistrarse;
     ProgressBar loadingProgressBar;
     ViewPager mViewPager;
-    String textoBtnAnterior;
+    String textoBtnAnterior, URL_API;
     TextView textoUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cambio_clave);
+        URL_API = getString(R.string.url_api);
 
         txtCedula = (EditText) findViewById(R.id.txtCedula);
         txtPass = (EditText) findViewById(R.id.txtPassword);
@@ -87,7 +88,7 @@ public class CambioClaveActivity extends AppCompatActivity {
                 if (txtrepitapass.getText().toString() != null && !txtrepitapass.getText().toString().equals("")) {
                     if (txtPass.getText().toString().equals(txtrepitapass.getText().toString())) {
                         // productivo
-                        String url = "http://ap2021.macpollo.com/apiv1/api/conductor/nuevapasswordcconductor";
+                        String url = URL_API + "conductor/nuevapasswordcconductor";
                         // pruebas
                         // String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/nuevapasswordcconductor";
                         mostrarComponentes(false, false, false, true, false);

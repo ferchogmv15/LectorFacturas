@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar loadingProgressBar;
     final int codeVersion = Parametros.getCodeVersionApp();
     ViewPager mViewPager;
+    String URL_API;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
         java.util.Timer timer = new java.util.Timer();
         timer.scheduleAtFixedRate(new The_Slide_Timer(), 5000, 10000);
 
+        URL_API = getString(R.string.url_api);
+
         //Toast.makeText(getApplicationContext(), String.valueOf(versionCode), Toast.LENGTH_SHORT).show();
     }
 
@@ -95,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = txtPassword.getText().toString();
             if (password != null && !password.equals("")) {
                 // productivo
-                 String url = "http://ap2021.macpollo.com/apiv1/api/conductor/ingresoconductor";
+                 String url = URL_API + "conductor/ingresoconductor";
                 // pruebas
                 //String url = "http://ap2021.macpollo.com/apiprueba/api/conductor/ingresoconductor";
 

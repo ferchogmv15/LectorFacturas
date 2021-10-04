@@ -48,4 +48,8 @@
 
     <string name="verificar_factura">Verificar factura</string>
     <string name="error_internet">Error de comunicación, inténtelo mas tarde</string>
+    <!-- URL productivo -->
+    <string name="url_api">http://ap2021.macpollo.com/apiv1/api/</string>
+    <!-- URL Calidad
+    <string name="url_api">http://ap2021.macpollo.com/apiprueba/api/</string>-->
 </resources>
