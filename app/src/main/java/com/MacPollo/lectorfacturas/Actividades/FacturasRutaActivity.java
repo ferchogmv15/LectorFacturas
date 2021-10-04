@@ -47,9 +47,9 @@ public class FacturasRutaActivity extends AppCompatActivity {
             if (isSoloNumero(codigo)) {
                 tvNumeroContrato.setText("Contrato transporte \n No: " + devolverSinCeros(codigo));
                 // productivo
-                 String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultacontrato";
+                String url = "http://ap2021.macpollo.com/apiv1/api/factura/consultacontrato";
                 // pruebas
-                //String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultacontrato";
+                // String url = "http://ap2021.macpollo.com/apiprueba/api/factura/consultacontrato";
                 // desarrollo
                 //String url = "http://192.168.1.11:8000/api/factura/consultacontrato";
                 //String url = "http://192.168.1.11:8081/consultacontrato.php";
@@ -70,11 +70,13 @@ public class FacturasRutaActivity extends AppCompatActivity {
 
                                 TablaFacRuta tabla = new TablaFacRuta(this, (TableLayout)findViewById(R.id.tabla));
                                 tabla.agregarCabecera(R.array.cabecera_tabla_fac_ruta);
+                                int subTotal = 0;
                                 if(transporte.get("item") instanceof JSONObject) {
                                     JSONObject item = transporte.getJSONObject("item");
                                     ArrayList<String> elementos = new ArrayList<>();
                                     elementos.add(item.getString("Xblnr"));
                                     elementos.add(Formatos.formatoValor(String.valueOf(item.getInt("Pago"))));
+                                    subTotal += item.getInt("Pago");
                                     tabla.agregarFilaTabla(elementos);
                                 } else if (transporte.get("item") instanceof JSONArray) {
                                     JSONArray items = transporte.getJSONArray("item");
@@ -98,6 +100,7 @@ public class FacturasRutaActivity extends AppCompatActivity {
                                             sumatoria = item.getInt("Pago");
                                             elementos.add(item.getString("Xblnr"));
                                         }
+                                        subTotal += item.getInt("Pago");
                                     }
                                     elementos.add(Formatos.formatoValor(String.valueOf(sumatoria)));
                                     tabla.agregarFilaTabla(elementos);
@@ -108,6 +111,12 @@ public class FacturasRutaActivity extends AppCompatActivity {
                                         //tabla.agregarFilaTabla(elementos);
                                     //}
                                 }
+
+                                // Agregar Subtotal
+                                ArrayList<String> colSubtotal = new ArrayList<>();
+                                colSubtotal.add(getString(R.string.total_tabla));
+                                colSubtotal.add(Formatos.formatoValor(String.valueOf(subTotal)));
+                                tabla.agregarFilaTabla(colSubtotal);
 
                                 tvErrorContrato.setVisibility(View.INVISIBLE);
                                 ScrollView resultados = (ScrollView) findViewById(R.id.scrollVertical);

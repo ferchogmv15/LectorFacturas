@@ -237,9 +237,9 @@ public class ScannerActivity extends AppCompatActivity {
     private void enviarVerificacion() {
         if (checkBoxVerificarFac.isChecked()) {
             // productivo
-            // String url = "http://ap2021.macpollo.com/apiv1/api/factura/verificarfacturaconductor";
+            String url = "http://ap2021.macpollo.com/apiv1/api/factura/verificarfacturaconductor";
             // pruebas
-            String url = "http://ap2021.macpollo.com/apiprueba/api/factura/verificarfacturaconductor";
+            //String url = "http://ap2021.macpollo.com/apiprueba/api/factura/verificarfacturaconductor";
 
             HashMap<String, String> data = new HashMap<>();
             data.put("cedulacon", cedula);

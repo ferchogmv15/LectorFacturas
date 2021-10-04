@@ -7,6 +7,7 @@
     <string name="valor_pagado">VLR PAGADO:</string>
     <string name="saldo_actual_factura">SALDO:</string>
     <string name="motivo_rechazo">MOTIVO RECHAZO:</string>
+    <string name="total_tabla">Total:</string>
     <string name="verificar_pago_factura">Verificar Pago Factura</string>
     <string name="facturas_pago_en_linea_en_mi_ruta">Facturas pago en linea en mi ruta</string>
     <string name="title_activity_scanner_ruta">ScannerRutaActivity</string>
