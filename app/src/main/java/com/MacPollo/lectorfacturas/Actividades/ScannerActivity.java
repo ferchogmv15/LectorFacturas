@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.MacPollo.lectorfacturas.Enums.ERoles;
 import com.MacPollo.lectorfacturas.General.Formatos;
 import com.MacPollo.lectorfacturas.General.MySingleton;
 import com.MacPollo.lectorfacturas.General.VerificarPermisos;
@@ -49,7 +50,7 @@ public class ScannerActivity extends AppCompatActivity {
     CodeScannerView codeScannerView;
     Button btnDigitar, btnEscaner;
     CheckBox checkBoxVerificarFac;
-    String cedula, numeroFactura, URL_API;
+    String cedula, numeroFactura, URL_API, rol_usuario;
     ConstraintLayout layoutResultados;
     int saldo = -1;
 
@@ -84,6 +85,7 @@ public class ScannerActivity extends AppCompatActivity {
 
         SharedPreferences preferencias = getSharedPreferences("user-data.xml", MODE_PRIVATE);
         cedula = preferencias.getString("cedula", "");
+        rol_usuario = preferencias.getString("rol", "");
 
         layoutResultados = (ConstraintLayout) findViewById(R.id.LayoutResultados);
         //Toast.makeText(getApplicationContext(), cedula, Toast.LENGTH_SHORT).show();
@@ -330,9 +332,11 @@ public class ScannerActivity extends AppCompatActivity {
         if (mostrar) {
             txt.setVisibility(View.INVISIBLE);
             layoutResultados.setVisibility(View.VISIBLE);
-            checkBoxVerificarFac.setVisibility(View.VISIBLE);
-            checkBoxVerificarFac.setChecked(false);
-            checkBoxVerificarFac.setClickable(true);
+            if (rol_usuario.equals(ERoles.CONDUCTOR.getCodigo())) {
+                checkBoxVerificarFac.setVisibility(View.VISIBLE);
+                checkBoxVerificarFac.setChecked(false);
+                checkBoxVerificarFac.setClickable(true);
+            }
         } else {
             txt.setVisibility(View.VISIBLE);
             layoutResultados.setVisibility(View.INVISIBLE);

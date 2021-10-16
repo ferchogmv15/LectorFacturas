@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPreferences preferencias = getSharedPreferences("user-data.xml", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = preferencias.edit();
                                 editor.putString("cedula", cedula);
+                                editor.putString("rol", response.getString("usuario"));
                                 editor.apply();
                                 Intent intent = new Intent(this, MainActivity.class);
                                 intent.putExtra("mensaje", mensaje);
